@@ -17,6 +17,26 @@ class Paraglider:
     def set_price(glider, new_price):
         glider.price = new_price
 
+    def get_certification(glider):
+        certification = ''
+        if glider.size in 'SM' and glider.weight <= 90:
+            certification = 'A'
+        elif glider.size in 'SM' and glider.weight >= 90:
+            certification = 'B'
+        elif glider.size =='L' and glider.weight <= 90:
+            certification = 'C'
+        else:
+            certification = 'D'
+
+        level=''
+
+        if certification in 'ABC':
+            level = 'beginner'
+        else:
+            level = 'expert'
+
+        return f'certification is {certification} and level is {level}'
+
 
 # create an object of the class Paraglider
 # create an instance of the class Paraglider
@@ -30,3 +50,4 @@ old_price = spor_glider.get_price()
 spor_glider.set_price(new_price=1.1*old_price)
 print(spor_glider.get_price())
 
+print(spor_glider.get_certification())
