@@ -16,6 +16,6 @@ def test_empty_account():
 def test_create_account():
     new_a = Account()
     assert  new_a.get_balance() == 0
-    assert  new_a.set_holer_name(name="bob") == "Holder's name is bob"
+    assert  new_a.set_holer_name(name="bob") == "Holder's name is Bob"
     assert new_a.set_holder_email(email="bob@xy.z") == "Holder's email is bob@xy.z"
-    assert  new_a.deposit(amount=100)== "New balance: 100USD"
+    assert  new_a.deposit(amount=100)== "New balance: 100 USD"

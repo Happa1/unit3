@@ -1,3 +1,4 @@
+# quiz36
 class Account:
     def __init__(self):
         self.balance = 0
@@ -11,7 +12,7 @@ class Account:
 
     def set_holer_name(self, name:str) -> str:
         self.holder_name = name
-        return f"Holder's name is {self.holder_name}"
+        return f"Holder's name is {self.holder_name.title()}"
 
     def set_holder_email(self, email:str) -> str:
         self.holder_email = email
@@ -21,6 +22,6 @@ class Account:
         return self.balance
 
     def deposit(self, amount:int) -> str:
-        deposit = amount
-        return f"New balance: {deposit}USD"
+        self.balance += amount
+        return f"New balance: {Account.get_balance(self)} USD"
 
