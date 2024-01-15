@@ -3,7 +3,7 @@ Manaha was kicked out from UWC ISAK Japan. To earn moneu to make her life, she d
 
 
 ## photo item
-[crepe.webp](..%2F..%2F..%2F..%2F..%2F..%2FDownloads%2Fcrepe.webp)
+[crape-shokai.webp](..%2F..%2F..%2F..%2F..%2F..%2FDownloads%2Fcrape-shokai.webp)
 **Fig.1** picture of crepe with a lot of fresh fruits
 
 ## raw materials to make crape
