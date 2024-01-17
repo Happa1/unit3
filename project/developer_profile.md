@@ -13,10 +13,10 @@ I started programming when I was in grade 8. I'm currently in grade11 of UWC ISA
 Programming Language: Python, PHP, Javascript (HTML, CSS)
 
 work in ISAK
-- cryptocurrency project
+- cryptocurrency project  
 By using python, I created terminal-run program of cryptocurrency transaction record.
 
-- weather API project
+- weather API project  
 I used temperature and humidity data from API and drew graphs to visualize by using python.
 
 outside ISAK
