@@ -9,7 +9,7 @@ Manaha was kicked out from UWC ISAK Japan. To earn money to make her life, she d
 
 ## raw materials to make crape
 ### crepe dkin
-- Flour
+- Flour  
 What flour you choose decides the texture of crepe skin.
 Eg) flower-based, rice-based, rye-based, wheat-based
 - Eggs
@@ -18,20 +18,20 @@ Eg) flower-based, rice-based, rye-based, wheat-based
 - Butter
 
 ### crepe toppings
-- Ice cream
+- Ice cream  
 Eg) Vanilla, Chocolate, Matcha, Strawberry etc...
-- Fruit
+- Fruit  
 Eg) strawberries, muscat, grape, mikan, peach, banana
-- Source
+- Source  
 Eg) strawberry, chocolate, blueberry, orange
-- Other Topppings
+- Other Topppings  
 Eg) chocolate spray, alazan, chocolate stick, cookie
 
 ![download.jpeg](..%2Fassets%2Fdownload.jpeg)
 **Fig2** image of crepe ingredients
 
 (soft material!)
-- Name of the crepe
+- Name of the crepe  
 Please make the unique names!
 
 ## Who I need??
