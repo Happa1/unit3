@@ -1,6 +1,5 @@
-# Company profile
+# Mana-chan crepe shop!
 
-## image
 ![Mtyxv3QDrlZixFDWyncvKNyiNXBwPzc8xt58gddP.jpeg](..%2Fassets%2FMtyxv3QDrlZixFDWyncvKNyiNXBwPzc8xt58gddP.jpeg)
 **Fig.1** picture of crepe with a lot of fresh fruits
 
