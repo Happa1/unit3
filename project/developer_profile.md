@@ -9,7 +9,7 @@ I'm grade 11 student in UWC ISAK Japan.
 - food
 
 ## Experience of programming
-I started programming when I was in grade 8. I'm currently in grade11 of UWC ISAK Japan
+I started programming when I was in grade 8. I'm currently in grade11 of UWC ISAK Japan  
 Programming Language: Python, PHP, Javascript (HTML, CSS)
 
 work in ISAK
