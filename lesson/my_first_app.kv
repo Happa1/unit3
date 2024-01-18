@@ -1,0 +1,20 @@
+#my_first_app.kv
+
+Screen:
+    size: 500, 500
+
+    MDLabel:
+        id:my_label
+        text: "Hello World"
+        font_size: "30pt"
+        halign: "center"
+
+    MDRaisedButton:
+        id: my_btn
+        text: "Click me"
+        size_hint: 0.5, .1
+        pos_hint: {"center_x":.5, "center_y":.3}
+        color: "white"
+        md_bg_color: "#003049"
+        on_press:
+            app.button_pressed()

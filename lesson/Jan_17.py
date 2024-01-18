@@ -1,7 +1,12 @@
+import random
+import string
 class Engine:
-    def __init__(self, fuel_type, size):
+    def __init__(self, fuel_type, size:int):
         self.fuel_type = fuel_type
-        self.size = size
+        if self.fuel_type == 'Gasoline':
+            self.size = str(size) + "L"
+        else:
+            self.size = str(size) + "kW/h"
 
     def start(self):
         print("Engine started")
@@ -15,8 +20,8 @@ class Vehicle:
         self.model = model
         self.engine = None
 
-    def set_engine(self, engine:Engine):
-        self.engine= engine
+    def set_engine(self,engine):
+        self.engine= Engine()
 
     def start(self):
         if self.engine:
@@ -41,7 +46,7 @@ class Car(Vehicle):
     def add_passengers(self, passenger):
         current_passenger = self.no_passenger
         fit = False
-        if current_passenger + passenger < 4:
+        if current_passenger + passenger <= 4:
             fit = True
 
         if fit == True:
@@ -50,7 +55,6 @@ class Car(Vehicle):
         else:
             print(f'{current_passenger + passenger} people cannot fit the car.')
 
-
     def remove_passenger(self, passenger):
         current_passenger = self.no_passenger
         removed = current_passenger - passenger
@@ -58,21 +62,29 @@ class Car(Vehicle):
         print(f'{removed} people are in the car.')
 
 class LicensePlate(Vehicle):
-    def __init__(self,brand, model, num_doors, no_passenger,licenseplate):
-        super().__init__(brand, model, num_doors, no_passenger)
-        self.licenseplate = licenseplate
+    def __init__(self,brand, model, num_doors, no_passenger):
+        super().__init__(brand, model)
+        self.licenseplate = None
 
-    def set_licenseplate(self, license_no):
+    def set_licenseplate(self):
+        letter = chr(random.randint(ord('あ'),ord('ん')))
+        first_no = [str(random.randint(0,9) for _ in range(3))]
+        second_no = [str(random.randint(0,9) for _ in range(2))]
+        self.licenseplate = letter + ''.join(first_no) + '-' + ''.join(second_no)
 
-
+        return f'Your license plate number is {self.licenseplate}'
 
 #Example Usage:
-gasoline_engine = Engine("Gasoline") # Create an engine
-my_car = Car("Toyota", "Camry",4) # Create a car and set its engine
+gasoline_engine = Engine("Gasoline", 10) # Create an engine
+my_car = Car("Toyota", "Camry",4,3) # Create a car and set its engine
 my_car.set_engine(gasoline_engine)
 
-electronic_engine=Engine("Electric")
-i_miev=Car("Mitsubishi", "i_MiEV",4)
+car_2 = LicensePlate("Mitsubishi", "aaa",6,4)
+lisence = car_2.set_licenseplate()
+print(lisence)
+
+electronic_engine=Engine("Electric",30)
+i_miev=Car("Mitsubishi", "i_MiEV",4,3)
 
 
 #Start and stop the car
