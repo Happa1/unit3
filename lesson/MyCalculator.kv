@@ -1,0 +1,217 @@
+#My_calculator.kv
+
+Screen:
+
+    MDBoxLayout:
+        orientation: "vertical"
+        size: root.size
+        md_bg_color: "#444645"
+
+        MDLabel:
+            id: label_num
+            text: '0'
+            color: "white"
+            font_size: "45pt"
+            halign: "right"
+            padding: [20, 0]
+            md_bg_color: "#282928"
+
+        MDBoxLayout: # AC, +/-, %, ÷
+            MDRaisedButton: #ac
+                id: ac_btn
+                text: "AC"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#585a59"
+                on_press: app.clear_all()
+
+            MDRaisedButton: #+/-
+                id: plus_minus_btn
+                text: "+/-"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#585a59"
+                radius: [0, 0, 0, 0]
+                on_press:app.press_function(self)
+
+
+            MDRaisedButton: #%
+                id: percent_btn
+                text: "%"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#585a59"
+                radius: [0, 0, 0, 0]
+                on_press:app.press_function(self)
+
+
+            MDRaisedButton: #÷
+                id: divd_btn
+                text: "÷"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#e27602"
+                radius: [0, 0, 0, 0]
+                on_press: app.call_method("÷")
+
+
+
+        MDBoxLayout: # 7, 8, 9, ×
+            MDRaisedButton: #7
+                id: 7_btn
+                text: "7"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+
+            MDRaisedButton: #8
+                id: 8_btn
+                text: "8"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+            MDRaisedButton: #9
+                id: 9_btn
+                text: "9"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+            MDRaisedButton: #×
+                id: prod_btn
+                text: "×"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#e27602"
+                on_press: app.call_method("×")
+
+        MDBoxLayout: # 4, 5, 6, -
+            MDRaisedButton: #4
+                id: 4_btn
+                text: "4"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+
+            MDRaisedButton: #5
+                id: 5_btn
+                text: "5"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+
+
+
+            MDRaisedButton: #6
+                id: 6_btn
+                text: "6"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+            MDRaisedButton: #-
+                id: sub_btn
+                text: "-"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#e27602"
+                on_press: app.call_method("-")
+
+
+        MDBoxLayout: # 1,2,3,+
+            MDRaisedButton: #1
+                id: 1_btn
+                text: "1"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+            MDRaisedButton: #2
+                id: 2_btn
+                text: "2"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+            MDRaisedButton: #3
+                id: 3_btn
+                text: "3"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+            MDRaisedButton: #+
+                id: add_btn
+                text: "+"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#e27602"
+                on_press: app.call_method("+")
+
+        MDBoxLayout: # 0,.,=
+            MDRaisedButton: #0
+                id: 0_btn
+                text: "0"
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .5, 1
+                md_bg_color: "#959896"
+                on_press: app.press_number(self)
+
+
+
+            MDRaisedButton: #.
+                id: decimal_btn
+                text: "."
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#959896"
+
+            MDRaisedButton: #=
+                id: equal_btn
+                text: "="
+                font_size: "34pt"
+                halign: "center"
+                size_hint: .25, 1
+                md_bg_color: "#e27602"
+                on_press: app.call_method("=")
+
+
+
+
+
+
+
+
+
+
