@@ -1,0 +1,116 @@
+Screen:
+    size: 500, 700
+
+    MDBoxLayout:
+        id: one
+        size_hint: 1,1
+        md_bg_color: "faf8ef"
+        orientation: "vertical"
+
+        MDBoxLayout:
+            id: twenty_four_label
+            size_hint:.9, .125
+            pos_hint: {"center_x":.5, "center_y":.5}
+            orientation: "horizontal"
+
+            MDLabel:
+                size_hint: .4, .8
+                color: "#766e65"
+                font_size: "80pt"
+                halign: "center"
+                text: "2048"
+                bold: True
+
+            MDBoxLayout:
+                size_hint: .6,.8
+                md_bg_color: "blue"
+                orientation: "horizontal"
+                padding: dp(10)
+
+                MDLabel:
+                    md_bg_color: "#bcac9f"
+                    size_hint: .8, .8
+                    pos_hint: {"center_x":.5, "center_y":.5}
+
+                MDLabel:
+                    md_bg_color: "#bcac9f"
+                    size_hint: .8, .8
+                    pos_hint: {"center_x":.5, "center_y":.5}
+
+
+        MDLabel:
+            size_hint: .9, .125
+            pos_hint: {"center_x":.5, "center_y":.5}
+            text: "for the messages"
+
+        MDBoxLayout:
+            id:two
+            size_hint: .9, .75
+            pos_hint: {"center_x":.5, "center_y":.5}
+
+
+            MDBoxLayout:
+                size_hint: .9, .9
+                pos_hint: {"center_x":.5, "center_y":.5}
+                md_bg_color: "#bcac9f"
+                radius: [10, 10, 10, 10]
+                orientation: "vertical"
+                padding: dp(10)
+
+                MDBoxLayout:
+                    id:row1
+                    orientation: "horizontal"
+
+                    MyButton:
+                    MyButton:
+                    MyButton:
+                    MyButton:
+
+                MDBoxLayout:
+                    id:row2
+                    orientation: "horizontal"
+
+                    MyButton:
+                    MyButton:
+                    MyButton:
+                    MyButton:
+
+                MDBoxLayout:
+                    id:row3
+                    orientation: "horizontal"
+
+                    MyButton:
+                    MyButton:
+                    MyButton:
+                    MyButton:
+
+                MDBoxLayout:
+                    id:row4
+                    orientation: "horizontal"
+
+                    MyButton:
+                    MyButton:
+                    MyButton:
+                    MyButton:
+
+
+
+
+<MyButton>:
+    size_hint: 1, 1
+    padding: dp(10)
+    Button:
+        size_hint: .95, .95
+        radius: [10, 10, 10, 10]
+        color: "red"
+        font_size: "30pt"
+        halign: "center"
+        color: "white"
+        on_press:
+            app.button_pressed(self)
+
+
+
+
+
+

@@ -8,9 +8,6 @@ class SalesmanMap():
         self.name = None
 
     def get_map(self):
-        # self.x = x
-        # self.y = y
-        # self.name = name
         plt.scatter(self.x,self.y, marker='o', c='red')
         for i, label in enumerate(self.name):
             plt.annotate(label, (self.x[i], self.y[i]))
@@ -23,6 +20,6 @@ class SalesmanMap():
         self.name= names
 
 test = SalesmanMap()
-test_data = test.generate_data(['Kyoto', 'Osak','Kobe','Nara'])
+test_data = test.generate_data(['Kyoto', 'Osaka','Kobe','Nara'])
 test.get_map()
 

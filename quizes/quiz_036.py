@@ -25,3 +25,6 @@ class Account:
         self.balance += amount
         return f"New balance: {Account.get_balance(self)} USD"
 
+test = Account()
+holder_name = test.set_holer_name("Yuko")
+print(test.holder_name)
