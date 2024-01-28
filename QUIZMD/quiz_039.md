@@ -55,5 +55,5 @@ Screen:
 ```
 
 ## 3. Proof of work
-[evidence_039.mov](..%2Fassets%2Fevidence%2Fevidence_039.mov)
+![evidence_039.png](..%2Fassets%2Fevidence%2Fevidence_039.png)
 **Fig.3:** Evidence for quiz 039
