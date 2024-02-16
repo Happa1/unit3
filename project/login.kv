@@ -1,0 +1,40 @@
+#login.kv
+
+ScreenManager:
+    id: scr
+    SignupScreen:
+        name: "Sign_scr"
+    LoginScreen:
+        name: "Login_scr"
+
+
+<LoginScreen>:
+
+<SignupScreen>:
+    size: 500, 500
+    FitImage:
+        source: 'bck.png'
+
+    MDCard:
+        size_hint: .4, .6
+        elevation: 2
+        orientation: 'vertical'
+        pos_hint: {'center_x':.3, 'center_y':.7}
+
+        MDTextField:
+            id: uname
+            hint_text:"Entre user name"
+
+        MDTextField:
+            id: uemai
+            hint_text:"Entre email"
+
+        MDTextField:
+            id: upass
+            hint_text:"Entre password"
+
+        MDRaisedButton:
+            id: login
+            text: "SignUp"
+            on_press: root.try_signup()
+            size_hint: .3, 1

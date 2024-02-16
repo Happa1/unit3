@@ -1,5 +1,4 @@
 #test_quiz36.py
-import pytest
 from quiz_036 import Account
 
 
