@@ -1,0 +1,18 @@
+#droplist.kv
+
+MDScreen:
+    size: 500, 700
+
+    MDDropDownItem:
+        id: dropdown_user
+        pos_hint: {'center_x':.5, 'center_y': 0.5}
+        size_hint: None, None
+        size: 300, 58
+        text: "Select Customer"
+        on_release: app.open_menu(self)
+
+    MDLabel:
+        id: customer
+        text: ""
+        pos_hint: {'center_x':.5, 'center_y':0.2}
+        halign: 'center'
