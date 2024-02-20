@@ -1,7 +1,7 @@
 # Quiz 036
-
+![quiz_036.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_034-042%2Fquiz_036.jpg)
 **Fig.1:** prompt of quiz 036
-![quiz_036.jpg](..%2Fassets%2Fprompt%2Fquiz_036.jpg)
+
 
 ## solution
 ```.py
@@ -37,5 +37,5 @@ print(test.holder_name)
 ```
 
 ## Proof of work
-![evidence_036.png](..%2Fassets%2Fevidence%2Fevidence_036.png)
+![evidence_036.png](..%2F..%2Fassets%2Fevidence%2Fevidence_034-042%2Fevidence_036.png)
 **Fig.2:** Evidence for quiz 036

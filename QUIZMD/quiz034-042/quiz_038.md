@@ -1,9 +1,9 @@
 # Quiz 038
-![quiz_038.jpg](..%2Fassets%2Fprompt%2Fquiz_038.jpg)
+![quiz_038.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_034-042%2Fquiz_038.jpg)
 **Fig.1:** prompt of quiz 038
 
 ## 1. flow of chart
-![quiz_diagram_038.jpg](..%2Fassets%2Fflowchart%2Fquiz_diagram_038.jpg)
+![quiz_diagram_038.jpg](..%2F..%2Fassets%2Fflowchart%2Fflowchart_034-042%2Fquiz_diagram_038.jpg)
 **Fig.2:** algorithm flow chart of quiz 038
 
 ## 2. solution
@@ -36,5 +36,5 @@ test.get_map()
 ```
 
 ## 3. Proof of work
-![evidence_038.png](..%2Fassets%2Fevidence%2Fevidence_038.png)
+![evidence_038.png](..%2F..%2Fassets%2Fevidence%2Fevidence_034-042%2Fevidence_038.png)
 **Fig.3:** Evidence for quiz 038

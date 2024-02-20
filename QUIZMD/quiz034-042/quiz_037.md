@@ -1,9 +1,9 @@
 # Quiz 037
-![quiz_037.jpg](..%2Fassets%2Fprompt%2Fquiz_037.jpg)
+![quiz_037.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_034-042%2Fquiz_037.jpg)
 **Fig.1:** prompt of quiz 037
 
 ## 1. flow of chart
-![quiz_diagram_037.jpg](..%2Fassets%2Fflowchart%2Fquiz_diagram_037.jpg)
+![quiz_diagram_037.jpg](..%2F..%2Fassets%2Fflowchart%2Fflowchart_034-042%2Fquiz_diagram_037.jpg)
 **Fig.2:** algorithm flow chart of quiz 037
 
 ## 2. solution
@@ -47,5 +47,5 @@ print(email)
 ```
 
 ## 3. Proof of work
-![evidence_037.png](..%2Fassets%2Fevidence%2Fevidence_037.png)
+![evidence_037.png](..%2F..%2Fassets%2Fevidence%2Fevidence_034-042%2Fevidence_037.png)
 **Fig.3:** Evidence for quiz 037

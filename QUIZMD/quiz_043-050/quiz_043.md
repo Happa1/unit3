@@ -1,10 +1,10 @@
 # Quiz 043
-![quiz_043.jpg](..%2Fassets%2Fprompt%2Fquiz_043.jpg)
+![quiz_043.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_043-050%2Fquiz_043.jpg)
 **Fig.1:** prompt of quiz 043
 
 ## 1. flow of chart
-
-**Fig.2:** algorithm flow chart of quiz 043
+![quiz_043.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_043-050%2Fquiz_043.jpg)
+**Fig.2:**  ER diagram of quiz 043
 
 ## 2. solution
 ```.py
@@ -38,5 +38,5 @@ CREATE TABLE genre(
 ```
 
 ## 3. Proof of work
-![evidence_043.png](..%2Fassets%2Fevidence%2Fevidence_043.png)
+![evidence_043.png](..%2F..%2Fassets%2Fevidence%2Fevidence_043-050%2Fevidence_043.png)
 **Fig.3:** Evidence for quiz 043

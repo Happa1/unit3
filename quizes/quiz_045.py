@@ -1,4 +1,3 @@
-#
 # SELECT t.account_id,
 #        c.first_name,
 #        c.last_name,

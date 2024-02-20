@@ -1,9 +1,9 @@
 # Quiz 039
-![quiz_039.jpg](..%2Fassets%2Fprompt%2Fquiz_039.jpg)
+![quiz_039.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_034-042%2Fquiz_039.jpg)
 **Fig.1:** prompt of quiz 039
 
 ## 1. flow of chart
-![quiz_diagram_039.jpg](..%2Fassets%2Fflowchart%2Fquiz_diagram_039.jpg)
+![quiz_diagram_039.jpg](..%2F..%2Fassets%2Fflowchart%2Fflowchart_034-042%2Fquiz_diagram_039.jpg)
 **Fig.2:** algorithm flow chart of quiz 039
 
 ## 2. solution
@@ -57,5 +57,5 @@ Screen:
 ```
 
 ## 3. Proof of work
-![evidence_039.png](..%2Fassets%2Fevidence%2Fevidence_039.png)
+![evidence_039.png](..%2F..%2Fassets%2Fevidence%2Fevidence_034-042%2Fevidence_039.png)
 **Fig.3:** Evidence for quiz 039

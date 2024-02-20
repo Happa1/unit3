@@ -1,3 +1,13 @@
+# Quiz 050
+![quiz_050.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_043-050%2Fquiz_050.jpg)
+**Fig.1:** prompt of quiz 050
+
+## 1. flow of chart
+![quiz_diagram_050.jpg](..%2F..%2Fassets%2Fflowchart%2Fflowchart_043-050%2Fquiz_diagram_050.jpg)
+**Fig.2:** UML diagram of quiz 050
+
+## 2. solution
+```.py
 class Flight:
     def __init__(self, flight_numbers:str, origin:str, destination:str, demonstrate_time:str, duration=list[int]):
         self.flight_numbers = flight_numbers
@@ -19,3 +29,9 @@ print(test.get_duration())
 
 test2 = Flight(flight_numbers='B777', origin="Tokyo", destination="Fukuoka", demonstrate_time="2:00PM", duration=[1,40,5])
 print(test2.get_duration())
+
+```
+
+## 3. Proof of work
+![evidence_050.png](..%2F..%2Fassets%2Fevidence%2Fevidence_043-050%2Fevidence_050.png)
+**Fig.3:** Evidence for quiz 050
