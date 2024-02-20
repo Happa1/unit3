@@ -3,7 +3,7 @@
 **Fig.1:** prompt for quiz 046
 
 ## 1. flow of chart
-![evidence_046.png](..%2F..%2Fassets%2Fevidence%2Fevidence_043-050%2Fevidence_046.png)
+![quiz_046.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_043-050%2Fquiz_046.jpg)
 **Fig.2:** ER diagram of quiz 046
 
 ## 2. solution

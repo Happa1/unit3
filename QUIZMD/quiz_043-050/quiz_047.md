@@ -1,10 +1,10 @@
 # Quiz 047
 ![quiz_047.jpg](..%2F..%2Fassets%2Fprompt%2Fquiz_043-050%2Fquiz_047.jpg)
-**Fig.1:** prompt of quiz num
+**Fig.1:** prompt of quiz 047
 
 ## 1. flow of chart
-
-**Fig.2:** algorithm flow chart of quiz num
+![quiz_diagram_047.jpg](..%2F..%2Fassets%2Fflowchart%2Fflowchart_043-050%2Fquiz_diagram_047.jpg)
+**Fig.2:** ER diagram of quiz 047
 
 ## 2. solution
 ```.py
@@ -380,5 +380,5 @@ MDScreen:
 ![evidence_047_3.png](..%2F..%2Fassets%2Fevidence%2Fevidence_043-050%2Fevidence_047_3.png)
 **Fig.5:** Evidence for quiz 047
 
-![evidence_quiz047.gif](..%2F..%2Fassets%2Fevidence%2Fevidence_043-050%2Fevidence_quiz047.gif)
+![evidence_047.gif](..%2F..%2Fassets%2Fevidence%2Fevidence_043-050%2Fevidence_047.gif)
 **Fig.6:** Evidence for quiz 047 (video)

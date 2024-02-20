@@ -3,7 +3,7 @@
 **Fig.1:** prompt of quiz num
 
 ## 1. flow of chart
-[quiz_049.py](..%2F..%2Fquizes%2Fquiz_049.py)
+![quiz_diagram_049.jpg](..%2F..%2Fassets%2Fflowchart%2Fflowchart_043-050%2Fquiz_diagram_049.jpg)
 **Fig.2:** algorithm flow chart of quiz 049
 
 ## 2. solution
