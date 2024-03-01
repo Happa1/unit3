@@ -1,0 +1,296 @@
+ScreenManager:
+#    HomeScreen:
+#        name: "Home"
+#    SignupScreen:
+#        name: "Signup"
+#    LoginScreen:
+#        name: "Login"
+    MenuScreen:
+        name: "Menu"
+    TakeOrderScreen:
+        name: "TakeOrder"
+    SuccessOrderScreen:
+        name: "Success"
+    ErrorOrderScreen:
+        name: "Error"
+    DescriptionScreen:
+        name: "Description"
+    CheckOrderScreen:
+        name: "CheckOrder"
+    InventoryScreen:
+        name: "Inventory"
+    LedgerScreen:
+        name: "Ledger"
+
+#
+#<HomeScreen>:
+#    MDLabel:
+#        text: "Candlique"
+#        font_size: "100px"
+#        halign: "center"
+#        pos_hint: {'center_x':.5, 'center_y':.8}
+#
+#    MDRaisedButton:
+#        size_hint: .3, .08
+#        pos_hint: {'center_x':.3, 'center_y':.3}
+#        style: "standard"
+#        text: "Sign up"
+#        on_press:
+#            root.go_signup()
+#            app.changed()
+#
+#    MDRaisedButton:
+#        size_hint: .3, .08
+#        pos_hint: {'center_x':.7, 'center_y':.3}
+#        style: "standard"
+#        text: 'Login'
+#        on_press:
+#            root.go_login()
+#            app.changed()
+#
+#<SignupScreen>:
+#    FitImage:
+#        source: 'ER_diagram'
+#
+#    MDBoxLayout:
+#        orientation: "vertical"
+#        size_hint: .8, .8
+#        pos_hint: {'center_x':.5, 'center_y':.5}
+#
+#
+#        MDBoxLayout:
+#            orientation: "horizontal"
+#            size_hint: 1, .25
+#            halign: "center"
+#
+#
+#            MDRaisedButton:
+#                id: back
+#                text: "<< Back"
+#                size_hint: .1, .2
+#                pos_hint: {'center_x':.5, 'center_y':.5}
+#                on_press:
+#                    root.go_back_to_home()
+#                    app.changed()
+#
+#            MDLabel:
+#                text: "Sign up"
+#                font_size: "50"
+#                pos_hint: {'center_x':.2, 'center_y':.5}
+#                size_hint: .9, .25
+#                halign: 'center'
+#
+#
+#        MDBoxLayout:
+#            orientation: "vertical"
+#            size_hint: 1, .25
+#
+#            MDLabel:
+#                text: "Username"
+#
+#            MDTextField:
+#                id: uname
+#                hint_text:"Enter username"
+#
+#        MDBoxLayout:
+#            orientation: "vertical"
+#            size_hint: 1, .25
+#
+#            MDLabel:
+#                text: "Password"
+#
+#            MDTextField:
+#                id: upass
+#                hint_text:"Enter password"
+#
+#        MDBoxLayout:
+#            orientation: "vertical"
+#            size_hint: 1, .25
+#
+#            MDLabel:
+#                text: "Password (confirmation)"
+#
+#            MDTextField:
+#                id: upass_conf
+#                hint_text:"Enter password again"
+#
+#        MDLabel:
+#            id: error_label
+#            size_hint: 1, .1
+#            text: ""
+#            halign: "center"
+#
+#        MDRaisedButton:
+#            id: signup
+#            text: "SignUp"
+#            on_press: root.try_signup()
+#            size_hint: 0.3, .1
+#            pos_hint: {'center_x':.5, 'center_y':.5}
+#
+#
+#<LoginScreen>:
+#    FitImage:
+#        source: 'ER_diagram'
+#
+#    MDBoxLayout:
+#        orientation: "vertical"
+#        size_hint: .8, .8
+#        pos_hint: {'center_x':.5, 'center_y':.5}
+#
+#
+#        MDBoxLayout:
+#            orientation: "horizontal"
+#            size_hint: 1, .25
+#            halign: "center"
+#
+#
+#            MDRaisedButton:
+#                id: back
+#                text: "<< Back"
+#                size_hint: .1, .2
+#                pos_hint: {'center_x':.5, 'center_y':.5}
+#                on_press:
+#                    root.go_back_to_home()
+#                    app.changed()
+#
+#            MDLabel:
+#                text: "Login"
+#                font_size: "50"
+#                pos_hint: {'center_x':.2, 'center_y':.5}
+#                size_hint: .9, .25
+#                halign: 'center'
+#
+#
+#        MDBoxLayout:
+#            orientation: "vertical"
+#            size_hint: 1, .25
+#
+#            MDLabel:
+#                text: "Username"
+#
+#            MDTextField:
+#                id: uname
+#                hint_text:"Enter username"
+#
+#        MDBoxLayout:
+#            orientation: "vertical"
+#            size_hint: 1, .25
+#
+#            MDLabel:
+#                text: "Password"
+#
+#            MDTextField:
+#                id: upass
+#                hint_text:"Enter password"
+#
+#        MDLabel:
+#            id: error_label
+#            size_hint: 1, .1
+#            text: ""
+#
+#        MDRaisedButton:
+#            id: signup
+#            text: "Login"
+#            on_press: root.try_login()
+#            size_hint: 0.3, .1
+#            pos_hint: {'center_x':.5, 'center_y':.5}
+#
+
+<MenuScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .8, .8
+        pos_hint: {'center_x':.5, 'center_y':.5}
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, .25
+            halign: "center"
+
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                size_hint: .1, .4
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                on_press:
+                    root.go_back_to_home()
+                    app.changed()
+
+            MDLabel:
+                text: "Menu"
+                font_size: "50"
+                halign: "center"
+                size_hint: 1, .08
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
+
+        MDRaisedButton:
+            id: Take_order
+            text: "Take Order"
+            font_size: "80"
+            spacing: dp(10)
+            on_press:root.screen_change(self)
+            size_hint:  .8, .05
+            pos_hint: {'center_x':.5}
+
+        MDRaisedButton:
+            id: Description
+            text: "Check Descriptions"
+            font_size: "80"
+            spacing: dp(10)
+            on_press:root.screen_change(self)
+            size_hint: .8, .05
+            pos_hint: {'center_x':.5}
+
+        MDRaisedButton:
+            id: CheckOrder
+            text: "Check Order"
+            font_size: "80"
+            spacing: dp(10)
+            on_press:root.screen_change(self)
+            size_hint:  .8,.05
+            pos_hint: {'center_x':.5}
+
+        MDRaisedButton:
+            id: Inventory
+            text: "Purchase materials"
+            font_size: "80"
+            on_press:root.screen_change(self)
+            size_hint: .8, .05
+            pos_hint: {'center_x':.5}
+
+        MDRaisedButton:
+            id: Ledger
+            text: "Check ledger"
+            font_size: "80"
+            on_press:root.screen_change(self)
+            size_hint: .8, .05
+            pos_hint: {'center_x':.5}
+
+        MDRaisedButton:
+            id: create_menu
+            text: "Create menu"
+            font_size: "80"
+            on_press:root.screen_change(self)
+            size_hint: .8, .05
+            pos_hint: {'center_x':.5}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

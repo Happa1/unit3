@@ -32,8 +32,27 @@ Considering the client's requirements, a GUI (Graphical User Interface) applicat
 
 
 ## Tools of my solution
+By considering the requirements of the client, I decided to use a GUI (Graphical User Interface) application for the development. 
+GUI application is a desktop application that doesn’t require an Internet connection. 
+This allows strong security to protect from application hijacks and makes it easy to improve the application. 
+Compared to the GLI (Command Line Interface) application, the GUI application has good visual elements, so people who are not familiar with programming can easily use it.
+For a programming language, I decided to use Python. 
+Python includes a wide range of libraries and frameworks, so I can develop user interfaces, databases, and backend programs in one language. 
+Python is also a well-known language, so the client asks for further improvement from other developers to update the application in the future. 
+For the development, I needed a database to record data, and I chose SQLite as a database that provides a relational database management system. 
+I developed a desktop application that works well with SQLite which uses local data sources. We can set hash-check for SQLite database, so it ensures higher security different from the Google spreadsheet. 
+In addition, SQLite is faster than other files and more reliable.
 
 **Citation**
+https://medium.com/analytics-vidhya/python-console-application-structure-ab337c5e94d7
+
+https://blog.hubspot.com/website/what-is-gui
+
+https://www.koombea.com/blog/web-apps-vs-desktop-apps/#:~:text=Web%20applications%20require%20an%20Internet,between%20desktop%20and%20web%20applications.
+
+https://www.redswitches.com/blog/advantages-and-disadvantages-of-python/#:~:text=Python's%20pros%20include%20its%20simplicity,Python%20a%20dynamically%20typed%20language%3F
+
+https://www.javatpoint.com/sqlite-advantages-and-disadvantages
 
 
 ## Structure of my solution
@@ -49,7 +68,7 @@ Considering the client's requirements, a GUI (Graphical User Interface) applicat
 
 # Criteria B: Design
 
-## System Diagram
+## ER Diagram
 
 ## Flow Diagrams
 
