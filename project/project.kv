@@ -1,29 +1,152 @@
-ScreenManager:
-#    HomeScreen:
-#        name: "Home"
-#    SignupScreen:
-#        name: "Signup"
-#    LoginScreen:
-#        name: "Login"
-    MenuScreen:
-        name: "Menu"
-    TakeOrderScreen:
-        name: "TakeOrder"
-    SuccessOrderScreen:
-        name: "Success"
-    ErrorOrderScreen:
-        name: "Error"
-    DescriptionScreen:
-        name: "Description"
-    CheckOrderScreen:
-        name: "CheckOrder"
-    InventoryScreen:
-        name: "Inventory"
-    LedgerScreen:
-        name: "Ledger"
+<DrawerClickableItem@MDNavigationDrawerItem>
+    focus_color: "#e7e4c0"
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    ripple_color: "#c5bdd2"
+    selected_color: "#0c6c4d"
+
+
+<DrawerLabelItem@MDNavigationDrawerItem>
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    focus_behavior: False
+    selected_color: "#4a4939"
+    _no_ripple_effect: True
+
+MDScreen:
+
+    MDNavigationLayout:
+
+        MDScreenManager:
+            id: screen_manager
+#            HomeScreen:
+#                name: "Home"
+#            SignupScreen:
+#                name: "Signup"
+#            LoginScreen:
+#                name: "Login"
+            MenuScreen:
+                name: "Menu"
+            TakeOrderScreen:
+                name: "TakeOrder"
+            CheckScreen:
+                name:"Check"
+            SuccessOrderScreen:
+                name: "Success"
+            ErrorOrderScreen:
+                name: "Error"
+            DescriptionScreen:
+                name: "Description"
+            CheckOrderScreen:
+                name: "CheckOrder"
+            InventoryScreen:
+                name: "Inventory"
+            InventoryOrderScreen:
+                name: "InventoryOrder"
+            LedgerScreen:
+                name: "Ledger"
+
+        MDTopAppBar:
+            id: topbar
+            title: "Navigation Drawer"
+            elevation: 4
+            pos_hint: {"top": 1}
+            md_bg_color: "#e7e4c0"
+            specific_text_color: "#4a4939"
+            left_action_items:[['menu', lambda x: nav_drawer.set_state("open")]]
+
+        MDNavigationDrawer:
+            id: nav_drawer
+#            md_bg_color: "#f7f4e7"
+            radius: (0, 16, 16, 0)
+
+#            MDNavigationDrawerMenu:
+            NavigationMenu:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
+
+<NavigationMenu>:
+    MDNavigationDrawerHeader:
+        title: "Candliqe"
+        title_color: "#4a4939"
+    #                    text: "Markup:サイズ40　[size=40]ヒラギノ丸ゴ ProN W4 (デフォルト)[/size]"
+        font_family: "JetBrainsMono"
+    #                    text: f"[color=#000000][font=Roboto]Logged[/font] [font=RobotoMedium]in![/font] [font=Icons]{md_icons['login']}[/font][/color]"
+        spacing: "4dp"
+        padding: "12dp", 0, 0, "56dp"
+
+    MDNavigationDrawerLabel:
+        text: "Menu"
+
+    DrawerClickableItem:
+        icon: "home"
+        text: "Home"
+        on_press:
+            root.nav_drawer.set_state("close")
+            root.screen_manager.current = "Menu"
+
+    DrawerClickableItem:
+        icon: "note-edit"
+        text: "Take Order"
+        on_press:
+            root.nav_drawer.set_state("close")
+            root.screen_manager.current = "TakeOrder"
+
+    DrawerClickableItem:
+        icon: "newspaper-variant"
+        text: "Description"
+        on_press:
+            root.nav_drawer.set_state("close")
+            root.screen_manager.current = "Description"
+
+    DrawerClickableItem:
+        icon: "list-box-outline"
+        text: "Check Order"
+        on_press:
+            root.nav_drawer.set_state("close")
+            root.screen_manager.current = "CheckOrder"
+
+    DrawerClickableItem:
+        icon: "package-variant-closed"
+        text: "Inventory"
+        on_press:
+            root.nav_drawer.set_state("close")
+            root.screen_manager.current = "Inventory"
+
+    DrawerClickableItem:
+        icon: "cash"
+        text: "Ledger"
+        on_press:
+            root.nav_drawer.set_state("close")
+            root.screen_manager.current = "Ledger"
+
+    MDNavigationDrawerDivider:
+
+    MDNavigationDrawerLabel:
+        text: "Logout"
+
+    DrawerClickableItem:
+        icon: "logout"
+        text: "Logout"
+        on_press:
+            root.nav_drawer.set_state("close")
+            root.screen_manager.current = "Home"
+
+
+#        on_press:
+#            root.go_back_to_home()
+#            app.changed()
+
+#<HomeScreen>:
+#    FitImage:
+#        source: 'Project_Images/home2.jpeg'
+#
+#    MDBoxLayout:
+#        size_hint: .8,.8
+#        pos_hint: {'center_x':.5, 'center_y':.5}
+#        background_color: (1, 0, 0, 0.5)  # RGBA format (Red, Green, Blue, Alpha)
 
 #
-#<HomeScreen>:
 #    MDLabel:
 #        text: "Candlique"
 #        font_size: "100px"
@@ -50,13 +173,13 @@ ScreenManager:
 #
 #<SignupScreen>:
 #    FitImage:
-#        source: 'ER_diagram'
+#        source: 'Project_Images/background2.jpeg'
 #
 #    MDBoxLayout:
 #        orientation: "vertical"
 #        size_hint: .8, .8
 #        pos_hint: {'center_x':.5, 'center_y':.5}
-#
+
 #
 #        MDBoxLayout:
 #            orientation: "horizontal"
@@ -102,6 +225,7 @@ ScreenManager:
 #            MDTextField:
 #                id: upass
 #                hint_text:"Enter password"
+#                password: True
 #
 #        MDBoxLayout:
 #            orientation: "vertical"
@@ -113,6 +237,7 @@ ScreenManager:
 #            MDTextField:
 #                id: upass_conf
 #                hint_text:"Enter password again"
+#                password: True
 #
 #        MDLabel:
 #            id: error_label
@@ -182,6 +307,7 @@ ScreenManager:
 #            MDTextField:
 #                id: upass
 #                hint_text:"Enter password"
+#                password: True
 #
 #        MDLabel:
 #            id: error_label
@@ -197,100 +323,663 @@ ScreenManager:
 #
 
 <MenuScreen>:
+    FitImage:
+        source: 'Project_Images/menubackground.jpeg'
+        opacity: .5
+
     MDBoxLayout:
         orientation: "vertical"
-        spacing: dp(20)
-        size_hint: .8, .8
+#        spacing: dp(20)
+        size_hint: 1, .8
         pos_hint: {'center_x':.5, 'center_y':.5}
 
-        MDBoxLayout:
-            orientation: "horizontal"
-            size_hint: 1, .25
-            halign: "center"
 
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            halign: "center"
 
             MDRaisedButton:
                 id: back
                 text: "<< Back"
-                size_hint: .1, .4
-                pos_hint: {'center_x':.5, 'center_y':.5}
-                on_press:
-                    root.go_back_to_home()
-                    app.changed()
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .3
+                pos_hint: {'center_x':.1, 'center_y':.5}
+
+        MDBoxLayout:
+            orientation:"vertical"
+            spacing:dp(25)
+            size_hint:  .4, .8
+            pos_hint: {'center_x':.75, 'center_y':.4}
+            md_bg_color: '#ffffff'
+            padding:[0,40,0,50]
+            radius: (40, 40, 40, 40)
 
             MDLabel:
                 text: "Menu"
                 font_size: "50"
                 halign: "center"
-                size_hint: 1, .08
+                font_size: 60
+                size_hint: .8, .1
                 pos_hint: {'center_x':.5, 'center_y':.5}
 
 
-        MDRaisedButton:
-            id: Take_order
-            text: "Take Order"
-            font_size: "80"
-            spacing: dp(10)
-            on_press:root.screen_change(self)
-            size_hint:  .8, .05
-            pos_hint: {'center_x':.5}
+            MDFillRoundFlatButton:
+                id: Take_order
+                style: "filled"
+                text: "Take Order"
+                text_color: "a0522d"
+                font_size: "50"
+                color: "a0522d"
+                md_bg_color: "FFF9CE"
+                spacing: dp(10)
+                on_press:root.screen_change(self)
+                size_hint:  .8, .05
+                pos_hint: {'center_x':.5}
+                radius: (40, 40, 40, 40)
+
+
+            MDFillRoundFlatButton:
+                style: "filled"
+                text: "Check Description"
+                text_color: "a0522d"
+                font_size: "50"
+                color: "a0522d"
+                md_bg_color: "FFF9CE"
+                spacing: dp(10)
+                on_press:root.screen_change(self)
+                size_hint:  .8, .05
+                pos_hint: {'center_x':.5}
+                radius: (40, 40, 40, 40)
+
+            MDFillRoundFlatButton:
+                id: CheckOrder
+                style: "filled"
+                text: "Check Order"
+                text_color: "a0522d"
+                font_size: "50"
+                color: "a0522d"
+                md_bg_color: "FFF9CE"
+                spacing: dp(10)
+                on_press:root.screen_change(self)
+                size_hint:  .8, .05
+                pos_hint: {'center_x':.5}
+                radius: (40, 40, 40, 40)
+
+            MDFillRoundFlatButton:
+                id: Inventory
+                style: "filled"
+                text: "Check Inventory"
+                text_color: "a0522d"
+                font_size: "50"
+                color: "a0522d"
+                md_bg_color: "FFF9CE"
+                spacing: dp(10)
+                on_press:root.screen_change(self)
+                size_hint:  .8, .05
+                pos_hint: {'center_x':.5}
+                radius: (40, 40, 40, 40)
+
+            MDFillRoundFlatButton:
+                id: Ledger
+                style: "filled"
+                text: "Check Ledger"
+                text_color: "a0522d"
+                font_size: "50"
+                color: "a0522d"
+                md_bg_color: "FFF9CE"
+                spacing: dp(10)
+                on_press:root.screen_change(self)
+                size_hint:  .8, .05
+                pos_hint: {'center_x':.5}
+                radius: (40, 40, 40, 40)
+
+            MDFillRoundFlatButton:
+                id: create_menu
+                style: "filled"
+                text: "Logout"
+                text_color: "a0522d"
+                font_size: "50"
+                color: "a0522d"
+                md_bg_color: "FFF9CE"
+                spacing: dp(10)
+                on_press:root.screen_change(self)
+                size_hint:  .8, .05
+                pos_hint: {'center_x':.5}
+                radius: (40, 40, 40, 40)
+
+
+<TakeOrderScreen>:
+    name: 'TakeOrder'
+    md_bg_color:"ffefd5"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, .75
+        pos_hint: {'center_x':.5, 'center_y':.5}
+
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .3
+                pos_hint: {'center_x':0, 'center_y':.5}
+                on_press:
+                    root.go_back_to_menu()
+                    app.changed()
+
+            MDLabel:
+                text: "Order"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, .25
+            spacing: dp(20)
+
+            MDBoxLayout:
+                orientation:"vertical"
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                md_bg_color: "ffffff"
+                radius: 35
+                padding: dp(20)
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+
+                    MDLabel:
+                        text: "Model: "
+                        font_size: "40"
+                        size_hint: .3,1
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+
+                    MDLabel:
+                        id: model
+                        font_size: "40"
+                        text:""
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+
+                MDDropDownItem:
+                    id: dropdown_model1
+                    text: "Choose model"
+                    height:"40"
+                    size_hint_y:None
+                    on_release: root.drop_menu(self,dropdown_model1)
+
+            MDBoxLayout:
+                orientation:"vertical"
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
+                MDLabel:
+                    text: "Model"
+                    halign:"center"
+                    font_size: "40"
+                    pos_hint: {'center_x':.5, 'center_y':.5}
+#                    pos_hint: {'center_x': .7, 'center_y': 1}
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, .25
+            spacing: dp(20)
+
+            MDBoxLayout:
+                orientation:"vertical"
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                md_bg_color: "ffffff"
+                radius: 35
+                padding: dp(20)
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    MDLabel:
+                        text: "Wax: "
+                        font_size: "40"
+                        size_hint: .25,1
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+                    MDLabel:
+                        id: wax
+                        text:""
+                        font_size: 40
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+                MDDropDownItem:
+                    id: dropdown_wax
+                    text: "Choose wax"
+                    height:"40"
+                    size_hint_y:None
+                    on_release: root.drop_menu(self,dropdown_wax)
+
+            MDBoxLayout:
+                orientation:"vertical"
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                md_bg_color: "ffffff"
+                radius: 35
+                padding: dp(20)
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    MDLabel:
+                        text: "Amount: "
+                        font_size: "40"
+                        size_hint: .4,1
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+                    MDLabel:
+                        id: amount
+                        font_size: 40
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+                MDDropDownItem:
+                    id: dropdown_amount
+                    text: "Choose amount"
+                    height:"40"
+                    size_hint_y:None
+                    on_release: root.drop_amount(self,dropdown_amount)
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, .25
+            spacing: dp(20)
+
+            MDBoxLayout:
+                orientation:"vertical"
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                md_bg_color: "ffffff"
+                radius: 35
+                padding: dp(20)
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+
+                    MDLabel:
+                        text: "Scent: "
+                        font_size: "40"
+                        size_hint: .3,1
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+                    MDLabel:
+                        id: scent
+                        text:""
+                        font_size: "40"
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+
+                MDDropDownItem:
+                    id: dropdown_scent
+                    text: "Choose scent"
+                    height:"40"
+                    size_hint_y:None
+                    on_release: root.drop_menu(self, dropdown_scent)
+
+
+            MDBoxLayout:
+                orientation:"vertical"
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                md_bg_color: "ffffff"
+                radius: 35
+                padding: dp(20)
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    MDLabel:
+                        text: "Package: "
+                        font_size: "40"
+                        size_hint: .4,1
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+                    MDLabel:
+                        id: package
+                        text:""
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+
+                MDDropDownItem:
+                    id: dropdown_package
+                    text: "Choose package"
+                    height:"40"
+                    size_hint_y:None
+                    on_release: root.drop_package(self, dropdown_package)
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1,.25
+            spacing: 100
+
+            MDRoundFlatIconButton:
+                id: more_candle
+                size_hint: .5,.5
+                text:"Create another candle"
+                icon: "candle"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width: 2
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_press:
+                    root.make_more_candle()
+
+            MDRoundFlatIconButton:
+                id: go_to_check
+                size_hint: .5,.5
+                icon: "credit-card-outline"
+                text:"Go to Payment"
+                icon: "candle"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width: 2
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_press:
+                    root.go_to_check()
+
+<CheckScreen>:
+    name: 'TakeOrder'
+    md_bg_color:"ffefd5"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, .75
+        pos_hint: {'center_x':.5, 'center_y':.5}
+
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                size_hint: .1, .3
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                pos_hint: {'center_x':.0, 'center_y':.5}
+                on_press:
+                    root.go_back_to_menu()
+                    app.changed()
+
+            MDLabel:
+                text: "Check"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
+        ScrollView:
+            MDBoxLayout:
+                id:container
+                orientation:"vertical"
+
+        MDFloatLayout:
+            MDRaisedButton:
+                id: check_button
+                text: "Check"
+                size_hint: .3, .1
+                pos_hint:{'center_x':.5, 'center_y':.5}
+                on_release: root.lets_check()
+
+<SuccessOrderScreen>:
+    name: 'Success'
+    md_bg_color:"ffefd5"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDLabel:
+            text:"Ordered Successfully"
 
         MDRaisedButton:
-            id: Description
-            text: "Check Descriptions"
-            font_size: "80"
-            spacing: dp(10)
-            on_press:root.screen_change(self)
-            size_hint: .8, .05
-            pos_hint: {'center_x':.5}
+            id: back
+            text: "Go back to menu"
+            md_bg_color:"FFC697"
+            text_color:"a0522d"
+            size_hint: .1, .4
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            on_press:
+                root.go_back_to_menu()
+                app.changed()
+
+<DescriptionScreen>:
+    name: 'Description'
+    md_bg_color:"ffefd5"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .9, .9
+        pos_hint: {'center_x':.5, 'center_y':.45}
+
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                size_hint: .1, .3
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                pos_hint: {'center_x':0, 'center_y':.5}
+                on_press:
+                    root.go_back_to_menu()
+                    app.changed()
+
+            MDLabel:
+                text: "Description"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
+        ScrollView:
+            MDBoxLayout:
+#                id:container_desc
+                orientation:"vertical"
+                adaptive_size:True
+
+                MDGridLayout:
+                    id: container_desc
+                    cols: 4
+                    adaptive_size: True
+                    spacing: "4dp"
+
+<CheckOrderScreen>:
+    name: 'CheckOrder'
+
+    CustomToolbar:
+        title: 'Menu'
+        box_orientation: "horizontal"
+        box_size_hint: (0.8, 0.35)
+        box_pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        box_spacing: dp(20)
 
         MDRaisedButton:
-            id: CheckOrder
-            text: "Check Order"
-            font_size: "80"
-            spacing: dp(10)
-            on_press:root.screen_change(self)
-            size_hint:  .8,.05
-            pos_hint: {'center_x':.5}
+            id: back
+            text: "<< Back"
+            size_hint: .1, .05
+            md_bg_color:"FFC697"
+            text_color:"a0522d"
+            pos_hint: {'center_x':.2, 'center_y':.9}
+            on_press:
+                root.go_back_to_menu()
+                app.changed()
+        MDLabel:
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            text: 'Order History'
+            font_style: 'H2'
+            halign: 'center'
+            size_hint: 0.8, 0.1
+
+<InventoryScreen>:
+    name: 'Inventory'
+    md_bg_color:"ffefd5"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, .75
+        pos_hint: {'center_x':.5, 'center_y':.5}
+
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .03
+                pos_hint: {'center_x':0, 'center_y':.8}
+                on_press:
+                    root.go_back_to_menu()
+                    app.changed()
+
+            MDLabel:
+                text: "Inventory List"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.8}
+
+
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: 1,.7
+            pos_hint:{'center_x':.5, 'center_y':.05}
+            spacing:50
+            padding:10
+
+            MDLabel:
+                id: checked_item
+                text:"Please check the item."
+                font_style: 'H5'
+                pos_hint:{'center_x':.05, 'center_y':0}
+                size_hint: .25, .1
+                halign:"center"
+                padding:10
+
+            MDTextField:
+                id: amount_of_inv
+                text:""
+                hint_text: "Amount"
+                mode: "rectangle"
+                size_hint: .25, .12
+                pos_hint: {'center_x':.35, 'center_y':.0}
+
+            MDRectangleFlatIconButton:
+                id: cart
+                text:"Add Cart"
+                icon: "cart-outline"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width: 2
+                size_hint: .25, .1
+                pos_hint: {'center_x':.65, 'center_y':.0}
+                padding:10
+                on_press: root.add_cart()
+
+            MDRectangleFlatIconButton:
+                id: go_purchase
+                text:"Go purchase"
+                icon: "credit-card-outline"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width: 2
+                size_hint: .25, 0.1
+                pos_hint: {'center_x':.95, 'center_y':.0}
+                padding:10
+                on_press: root.go_purchase()
+
+<InventoryOrderScreen>:
+    name: 'InventoryOrder'
+
+    CustomToolbar:
+        title: 'Menu'
+        box_orientation: "horizontal"
+        box_size_hint: (0.8, 0.35)
+        box_pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        box_spacing: dp(20)
 
         MDRaisedButton:
-            id: Inventory
-            text: "Purchase materials"
-            font_size: "80"
-            on_press:root.screen_change(self)
-            size_hint: .8, .05
-            pos_hint: {'center_x':.5}
+            id: back
+            text: "<< Back"
+            size_hint: .1, .05
+            md_bg_color:"FFC697"
+            text_color:"a0522d"
+            pos_hint: {'center_x':.2, 'center_y':.9}
+            on_press:
+                root.go_back_to_menu()
+                app.changed()
+        MDLabel:
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            text: 'Inventory List'
+            font_style: 'H2'
+            halign: 'center'
+            size_hint: 0.8, 0.1
 
         MDRaisedButton:
-            id: Ledger
-            text: "Check ledger"
-            font_size: "80"
-            on_press:root.screen_change(self)
-            size_hint: .8, .05
-            pos_hint: {'center_x':.5}
+            id: make_purchase
+            text:"Purchase"
+            size_hint: .25, 0.8
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            padding:10
+            on_press: root.make_purchase()
+
+<LedgerScreen>:
+    name: 'Ledger'
+
+    CustomToolbar:
+        title: 'Menu'
+        box_orientation: "horizontal"
+        box_size_hint: (0.8, 0.35)
+        box_pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        box_spacing: dp(20)
 
         MDRaisedButton:
-            id: create_menu
-            text: "Create menu"
-            font_size: "80"
-            on_press:root.screen_change(self)
-            size_hint: .8, .05
-            pos_hint: {'center_x':.5}
+            id: back
+            text: "<< Back"
+            size_hint: .1, .05
+            md_bg_color:"FFC697"
+            text_color:"a0522d"
+            pos_hint: {'center_x':.2, 'center_y':.9}
+            on_press:
+                root.go_back_to_menu()
+                app.changed()
+        MDLabel:
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            text: 'Ledger'
+            font_style: 'H2'
+            halign: 'center'
+            size_hint: 0.8, 0.1
 
+        MDBoxLayout:
+            size_hint: .3, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            orientation: "horizontal"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            MDRaisedButton:
+                id: date_descending
+                text: "Date"
+                pos_hint: {'center_x':.3, 'center_y':.5}
+                size_hint: .1,.8
+                on_press: root.date_descending_pressed()
 
