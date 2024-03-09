@@ -27,10 +27,6 @@ from kivymd.font_definitions import theme_font_styles
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.resources import resource_add_path
 
-# fontを収納しているフォルダのパスをリソースとして登録   ################################
-resource_add_path('/System/Library/Fonts')
-#  デフォルトのfont名を設定　#######################################################
-LabelBase.register(DEFAULT_FONT, 'ヒラギノ丸ゴ ProN W4.ttc')
 
 from project_lib import DatabaseWorker, make_hash, check_hash
 
@@ -42,12 +38,75 @@ db_connection = DatabaseWorker(name=db_name)
 db_connection.create()
 # db_connection.close()
 class HomeScreen(MDScreen):
+    create = """CREATE TABLE if not exists users(
+                    id INTEGER PRIMARY KEY,
+                    username VARCHAR(30),
+                    hash TEXT);"""
+    db_connection.run_query(create)
+
     pass
     def go_signup(self):
         self.parent.current = "Signup"
 
     def go_login(self):
         self.parent.current = "Login"
+
+    query_inventory ="""CREATE TABLE if not exists inventory(
+                 id INTEGER PRIMARY KEY,
+                 name text,
+                 genre text,
+                 description text,
+                 purchase_price int,
+                 selling_price int,
+                 amount int);"""
+
+    query_orders="""CREATE TABLE if not exists orders(
+                 id INTEGER PRIMARY KEY,
+                 staff_id int,
+                 model int,
+                 wax int,
+                 date TEXT,
+                 scent int,
+                 package TEXT,
+                 amount INT,
+                 price INT,
+                 total_price INT
+                 );
+"""
+    query_ledger="""CREATE TABLE if not exists ledger(
+                 id INTEGER PRIMARY KEY,
+                 staff_id INT,
+                 date TEXT,
+                 description TEXT,
+                 price INT,
+                 balance int);"""
+
+    query_order_hisotry="""CREATE TABLE if not exists order_history(
+                 id INTEGER PRIMARY KEY,
+                 staff_id INT,
+                 date TEXT,
+                 model int,
+                 wax int,
+                 scent int,
+                 package TEXT,
+                 amount int);
+"""
+
+    query_purchases="""
+    CREATE TABLE if not exists purchases(
+                 id INTEGER PRIMARY KEY,
+                 staff_id INT,
+                 date TEXT,
+                 material TEXT,
+                 amount INT,
+                 price INT,
+                 total INT);"""
+
+    db_connection.run_query(query_inventory)
+    db_connection.run_query(query_orders)
+    db_connection.run_query(query_purchases)
+    db_connection.run_query(query_order_hisotry)
+    db_connection.run_query(query_ledger)
 
 class SignupScreen(MDScreen):
     dialog=None
@@ -56,11 +115,11 @@ class SignupScreen(MDScreen):
         upass = self.ids.upass.text
         upass_conf = self.ids.upass_conf.text
 
-        create = """CREATE TABLE if not exists users(
+        query_users = """CREATE TABLE if not exists users(
                 id INTEGER PRIMARY KEY,
                 username VARCHAR(30),
                 hash TEXT);"""
-        db_connection.run_query(create)
+        db_connection.run_query(query_users)
 
         if not 0<len(uname)<16 or not 0<len(upass)<9 or not 0<len(upass_conf)<9:
             if not self.dialog:

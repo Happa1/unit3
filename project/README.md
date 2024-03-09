@@ -41,17 +41,6 @@ For the development, I needed a database to record data, and I chose SQLite as a
 I developed a desktop application that works well with SQLite which uses local data sources. We can set hash-check for SQLite database, so it ensures higher security different from the Google spreadsheet. 
 In addition, SQLite is faster than other files and more reliable.[^5]
 
-**Citation**
-https://medium.com/analytics-vidhya/python-console-application-structure-ab337c5e94d7
-
-https://blog.hubspot.com/website/what-is-gui
-
-https://www.koombea.com/blog/web-apps-vs-desktop-apps/#:~:text=Web%20applications%20require%20an%20Internet,between%20desktop%20and%20web%20applications.
-
-https://www.redswitches.com/blog/advantages-and-disadvantages-of-python/#:~:text=Python's%20pros%20include%20its%20simplicity,Python%20a%20dynamically%20typed%20language%3F
-
-https://www.javatpoint.com/sqlite-advantages-and-disadvantages
-
 
 ## Success Criteria
 1. The GUI application has a signup and login system that shop staff can login with a username and password. 
@@ -138,13 +127,152 @@ https://www.javatpoint.com/sqlite-advantages-and-disadvantages
 | Going back to Main Menu      | Integrated testing | 1. Enter the number depending on the menu the user chooses. (1 or 2 or 3 or 4 or 5 or 6) 2. Session successfully occurs. 3. Go back to the menu and the user enter the number depending on the menu the user chooses. (1 or 2 or 3 or 4 or 5 or 6) | If the thing that the user entered is an integer and either one of the numbers in menu, program move on to the session depending on the number the user chooses. After the session is done, set option_book as False go back to the code of the main menu, and displays the menu. If the user enter the option number correctly as following the above process, this code runs permanently  except when the user chooses to logout. |
 | Overall review               | System testing     | 1. Open the pycharm and start the program. 2. Choose signup or login and follow the procedure above. 3. Choose one of the options from the main menu, go to that session, and follow the procedure above. 4. Choose logout. (y or Y)               | All of the output went through well, and there was no error or confusion during the program. If the user chooses to logout, the program ends successfully without any errors.                                                                                                                                                                                                                                                       |
 
-## 
-
 
 # Criteria C: Development
 
-## Signup System (Success Criteria 3)
-My client requires a system to protect the private data. I thought about using a singup system to accomplish this requrement using if condition, for loop, while loop and the open command to work with csv file.
+## Create  Database
+As a requirement from the client about the record of the order of candle and money tracking, database is needed to achieve this goal.
+Therefore, I decided to use sqlite3 relational database to store the data with relations to apply stored data in many ways.
+
+File from: `project_lib.py`
+```.py
+import sqlite3
+class DatabaseWorker:
+    def __init__(self, name:str):
+        self.name_db = name
+        # Step1: Create a connection to the file
+        self.connection =  sqlite3.connect(self.name_db)
+        self.cursor = self.connection.cursor()
+        
+   def run_query(self, query:str):
+    self.cursor.execute(query) # run query
+    self.connection.commit() # save changes
+    
+    def search(self, query:str, multiple=False):
+        results = self.cursor.execute(query)
+        if multiple:
+            return results.fetchall() # return multiple rows in a list
+        return results.fetchone() # return single value
+
+    def search_variable(self, query:str, *args, multiple=False):
+        results = self.cursor.execute(query, args)
+        if multiple:
+            return results.fetchall() # return multiple rows in a list
+        return results.fetchone() # return single value
+
+```
+First, I imported the module `sqlite3` to obtain the module to create sqlite3 database. 
+I created the class `DatabaseWorker` to connect database and use it in the main python file `project.py`.
+I also created functions, `run_query` to run the query code from the python file, `search` and `search_variable` to search the data in the tables.
+
+File from: `project.py`
+```.py
+from project_lib import DatabaseWorker, make_hash, check_hash
+
+db_name = "project_db"
+db_connection = DatabaseWorker(name=db_name)
+db_connection.create()
+```
+By importing the `DatabaseWorker` from the file `project_lib.py`, I created the database called `project_db` and variable `db_connection` to connect with the database.
+
+I created 6 tables in the case of these tables are not existed.
+**users**
+```.py
+        query_users = """CREATE TABLE if not exists users(
+                id INTEGER PRIMARY KEY,
+                username VARCHAR(30),
+                hash TEXT);"""
+        db_connection.run_query(query_users)
+
+```
+
+**inventory**
+```.py
+    query_inventory ="""CREATE TABLE if not exists inventory(
+                 id INTEGER PRIMARY KEY,
+                 name text,
+                 genre text,
+                 description text,
+                 purchase_price int,
+                 selling_price int,
+                 amount int);"""
+    b_connection.run_query(query_inventory)
+```
+
+**orders**
+```.py
+query_orders="""CREATE TABLE if not exists orders(
+                 id INTEGER PRIMARY KEY,
+                 staff_id int,
+                 model int,
+                 wax int,
+                 date TEXT,
+                 scent int,
+                 package TEXT,
+                 amount INT,
+                 price INT,
+                 total_price INT
+                 );
+ db_connection.run_query(query_orders)
+"""
+```
+
+**purchases**
+```.py
+    query_purchases="""
+    CREATE TABLE if not exists purchases(
+                 id INTEGER PRIMARY KEY,
+                 staff_id INT,
+                 date TEXT,
+                 material TEXT,
+                 amount INT,
+                 price INT,
+                 total INT);"""                
+    db_connection.run_query(query_purchases)
+```
+
+**order_hisotry**
+```.py
+    query_order_hisotry="""CREATE TABLE if not exists order_history(
+                 id INTEGER PRIMARY KEY,
+                 staff_id INT,
+                 date TEXT,
+                 model int,
+                 wax int,
+                 scent int,
+                 package TEXT,
+                 amount int);
+```
+
+**ledger**
+```.py
+    query_ledger="""CREATE TABLE if not exists ledger(
+                 id INTEGER PRIMARY KEY,
+                 staff_id INT,
+                 date TEXT,
+                 description TEXT,
+                 price INT,
+                 balance int);"""
+    db_connection.run_query(query_ledger)
+```
+
+
+## Signup System (Success Criteria 1)
+As a requirement for the solution to clarify the user to make the attribution of responsibility, signup system is needed.
+Users make username and user password for the signup, and the system create hash from these data and store the hash instead of password to raise the level of security.
+
+
+From file `project.py`:
+
+```.py
+    def try_signup(self):
+        uname = self.ids.uname.text
+        upass = self.ids.upass.text
+        upass_conf = self.ids.upass_conf.text
+```
+
+To receive the data inputted in the GUI application, I connected the inputted username and user password by referring the `ids` of those `MDTextField`.
+Store the inputted username and password in the variable, `uname`, `upass`, `upass_conf`.
 
 
 ## Citation
