@@ -30,16 +30,16 @@ Considering the client's requirements, a GUI (Graphical User Interface) applicat
     -> the application automatically calculates the recommended amount of refinement based on the sale of the calculation.
 
 ## Tools of my solution
-By considering the requirements of the client, I decided to use a GUI (Graphical User Interface) application for the development. 
-GUI application is a desktop application that doesn’t require an Internet connection. 
-This allows strong security to protect from application hijacks and makes it easy to improve the application. 
+By considering the requirements of the client, I decided to use a GUI (Graphical User Interface) application for the development. [^1]
+GUI application is a desktop application that doesn’t require an Internet connection. [^2]
+This allows strong security to protect from application hijacks and makes it easy to improve the application. [^3]
 Compared to the GLI (Command Line Interface) application, the GUI application has good visual elements, so people who are not familiar with programming can easily use it.
-For a programming language, I decided to use Python. 
+For a programming language, I decided to use Python. [^4]
 Python includes a wide range of libraries and frameworks, so I can develop user interfaces, databases, and backend programs in one language. 
 Python is also a well-known language, so the client asks for further improvement from other developers to update the application in the future. 
 For the development, I needed a database to record data, and I chose SQLite as a database that provides a relational database management system. 
 I developed a desktop application that works well with SQLite which uses local data sources. We can set hash-check for SQLite database, so it ensures higher security different from the Google spreadsheet. 
-In addition, SQLite is faster than other files and more reliable.
+In addition, SQLite is faster than other files and more reliable.[^5]
 
 **Citation**
 https://medium.com/analytics-vidhya/python-console-application-structure-ab337c5e94d7
@@ -148,8 +148,8 @@ My client requires a system to protect the private data. I thought about using a
 
 
 ## Citation
-[^1]: “Exploring The Advantages And Disadvantages Of Python.” RedSwitches, 11 January 2024, https://www.redswitches.com/blog/advantages-and-disadvantages-of-python/. Accessed 10 March 2024.
-[^2]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
+[^1]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
+[^2]: “Exploring The Advantages And Disadvantages Of Python.” RedSwitches, 11 January 2024, https://www.redswitches.com/blog/advantages-and-disadvantages-of-python/. Accessed 10 March 2024.
 [^3]: Juviler, Jamie. “What Is GUI? Graphical User Interfaces, Explained.” HubSpot Blog, 30 August 2023, https://blog.hubspot.com/website/what-is-gui. Accessed 10 March 2024.
 [^4]:“Python: Console Application Structure | by Areyana | Analytics Vidhya.” Medium, 3 March 2020, https://medium.com/analytics-vidhya/python-console-application-structure-ab337c5e94d7. Accessed 10 March 2024.
 [^5]:“SQLite Advantages and Disadvantages - javatpoint.” Javatpoint, https://www.javatpoint.com/sqlite-advantages-and-disadvantages. Accessed 10 March 2024.
