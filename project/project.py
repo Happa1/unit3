@@ -201,7 +201,6 @@ class LoginScreen(MDScreen): #Login
             if valid:
                 app = MDApp.get_running_app()
                 app.staff_id_value = row[0]
-                print(f'staff_id: {app.staff_id_value}')
                 self.ids.uname.text=""
                 self.ids.upass.text=""
                 self.parent.current = "Menu"
@@ -271,7 +270,6 @@ class TakeOrderScreen(MDScreen):
         pass
     def drop_menu(self, drop_item_element, drop_instance):
         key = drop_instance.text
-        print(drop_instance)
         genre_d = {"Choose model":"model", "Choose wax":"wax", "Choose scent":"scent"}
         for k,v in genre_d.items():
             if key ==k:
@@ -423,11 +421,9 @@ class TakeOrderScreen(MDScreen):
             self.dialog.dismiss()
     def go_to_check(self):
         app = MDApp.get_running_app()
-        print(f'staff_id: {app.staff_id_value}')
         count_query="""
         SELECT COUNT(*) FROM orders"""
         count_result=db_connection.search(count_query)[0]
-        print(count_result)
 
         model = self.ids.model.text
         wax = self.ids.wax.text
@@ -553,66 +549,6 @@ class CheckScreen(MDScreen):
         db_connection.run_query(query=f"""delete FROM orders WHERE id={item_id}""")
         self.update()
 
-
-    # def on_enter(self, *args):
-    #     count_query = """
-    #             SELECT COUNT(*) FROM orders"""
-    #     count_result = db_connection.search(count_query)[0]
-    #     box_count = count_result  # 追加する MDBoxLayout の数を指定
-    #     self.update_layout(box_count)
-    #     print(box_count)
-    #
-    # def update_layout(self, box_count, box_layout=None):
-    #     container = self.ids.container
-    #     container.clear_widgets()  # 現在のすべての子要素を削除
-    #     for i in range(box_count):
-    #         count=i+1
-    #         box_layout = MDGridLayout(
-    #             cols=7)
-    #         with box_layout.canvas.before:
-    #             Color(0, 0, 0, 1)  # Set the background color to black
-    #             Line(rectangle=(box_layout.x, box_layout.y, box_layout.width, box_layout.height), width=1)
-    #
-    #         candle_name_query=f"""
-    #         SELECT description from inventory, orders where inventory.id=orders.model and orders.id={count}"""
-    #         candle_name=db_connection.search_variable(candle_name_query,multiple=False)[0]
-    #         candle_name_table = MDLabel(text=f'{candle_name} Candle')
-    #         box_layout.add_widget(candle_name_table)
-    #         print(f'box_layout.children: {box_layout.children}')
-    #
-    #         wax_name_query=f"""
-    #         SELECT name from inventory, orders where inventory.id=orders.wax and orders.id={count}"""
-    #         wax_name=db_connection.search(wax_name_query,multiple=False)[0]
-    #         wax_name_table = MDLabel(text=f'{wax_name}')
-    #         box_layout.add_widget(wax_name_table)
-    #
-    #         scent_name_query=f"""
-    #         SELECT name from inventory, orders where inventory.id=orders.scent and orders.id={count}"""
-    #         scent_name=db_connection.search(scent_name_query,multiple=False)[0]
-    #         scent_name_table = MDLabel(text=scent_name)
-    #         box_layout.add_widget(scent_name_table)
-    #
-    #         price_name_query = f"""
-    #                     SELECT price from orders"""
-    #         price_name = db_connection.search(price_name_query, False)[0]
-    #         price_name_table = MDLabel(text=f'{str(price_name)}')
-    #         box_layout.add_widget(price_name_table)
-    #
-    #         mark=MDLabel(text='X')
-    #         box_layout.add_widget(mark)
-    #
-    #         amount_name_query = f"""
-    #                          SELECT amount from orders where orders.id={count}"""
-    #         amount_name = db_connection.search(amount_name_query, False)[0]
-    #         amount_name_table = MDLabel(text=f'{str(amount_name)}')
-    #         box_layout.add_widget(amount_name_table)
-    #
-    #         button = MDRaisedButton(text=f'Delete')
-    #         box_layout.add_widget(button)
-    #
-    #         container.add_widget(box_layout)  # 新しい MDBoxLayout を追加
-    #         print(f'box_layout.children: {box_layout.children}')
-
     def lets_check(self):
         if not self.dialog:
             self.dialog = MDDialog(
@@ -646,25 +582,6 @@ class CheckScreen(MDScreen):
         count_result=db_connection.search(count_query)[0]
         print(count_result)
 
-        create_ledger_qery="""
-        CREATE TABLE if not exists ledger(
-                 id INTEGER PRIMARY KEY,
-                 staff_id INT,
-                 date TEXT,
-                 description TEXT,
-                 price INT,
-                 balance int);"""
-
-#         insert_first_ledger="""
-#         INSERT INTO ledger values (1,
-#                                    0,
-#                                    'first',
-#                                    10000,
-#                                    10000,
-#                                    0);
-# """
-        db_connection.run_query(create_ledger_qery)
-        # db_connection.run_query(insert_first_ledger)
 
         if self.dialog:
             order_history_query = """
@@ -827,7 +744,6 @@ class DescriptionScreen(MDScreen):
             )
         else:
             self.dialog.text=f"{text_desc}"
-
         self.dialog.open()
 
     def cancel_pressed(self, *args):

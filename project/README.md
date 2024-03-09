@@ -5,7 +5,7 @@
 # Criteria A: Planning
 
 ## Problem definition (Client Identification)
-The client, a locan entrepreneur M.M., opened sustainable candle shop,"Candelique", just a month ago.
+The client, a locan entrepreneur M.M., opened sustainable candle shop, "Candelique", just a month ago.
 Candelique is at the forefront of innovation in the candle industry, blending sustainability with cutting-edge designs. 
 Candles in her shop are popular for its sustainability and cute designs, so many customers come every day. 
 The more customers come than she expected, and she only uses paper to track the order of candle materials. 
@@ -60,7 +60,7 @@ In addition, SQLite is faster than other files and more reliable.[^5]
 
 ## System Diagram
 ![system_diagram.jpg](Project_md_image%2Fsystem_diagram.jpg)
-**Fig.1**
+**Fig.2**
 
 
 ## ER Diagram
@@ -261,6 +261,13 @@ query_orders="""CREATE TABLE if not exists orders(
 As a requirement for the solution to clarify the user to make the attribution of responsibility, signup system is needed.
 Users make username and user password for the signup, and the system create hash from these data and store the hash instead of password to raise the level of security.
 
+From file `project_lib.py`:
+```.py
+    from passlib.hash import sha256_crypt
+    hasher = sha256_crypt.using(rounds=30000)
+```
+
+I imported the module `sha256_crypt` from the `passlib.hash` to create hash.
 
 From file `project.py`:
 
@@ -347,7 +354,753 @@ If it is valid which means that the set of username and password are already exi
 ```
 If the inputted data meets those recommendations, by using the sqlite3 query the system create username and password (hash).
 After the system stored the information about username and password, make the text fields
-Then, the page automatically move to the log in.
+Then, the page automatically movse to the login page.
+
+## Login System (Success Criteria 1)
+Following the requirement above, I created a login system to verify the username and password. 
+It uses the hash to raise the level of security in the process of login.
+
+From file: `project_lib.py`
+```.py
+    from passlib.hash import sha256_crypt
+    hasher = sha256_crypt.using(rounds=30000)
+    
+    def make_hash(text:str):
+        return hasher.hash(text)
+    
+    def check_hash(hashed_text, text):
+        return hasher.verify(text, hashed_text)
+```
+
+I created `make_hash` and `check_hash` function in the file `project_lib.py`. 
+Putting the code in the sub library file, prevent redundant code and makes the main python code organized.
+
+From file: `project.py`
+```.py
+class LoginScreen(MDScreen): #Login
+    dialog = None
+    def try_login(self):
+        uname = self.ids.uname.text
+        upass = self.ids.upass.text
+        query="SELECT * FROM users"
+        results= db_connection.search(query=query,multiple=True)
+
+```
+To receive the data inputted in the GUI application, I connected the inputted username and user password by referring the `ids` of those `MDTextField`.
+Store the inputted username and password in the variable, `uname`, `upass`.
+I connected to the database in the table `users` by the query `"SELECT * FROM users"`.
+It returns the all user information and stored in the list of `results`.
+
+```.py
+        for row in results:
+            signature = row[2]
+            hash_text=f"name {uname},pass {upass}"
+            valid=check_hash(hashed_text=signature, text=hash_text)
+
+```
+After receiving the users' information from `results`, extract only hash part.
+The system creates the hash with given username and password, and the verify by comparing with stored hash in every row of `users` table by using `check_hash` function.
+
+```.py
+            if valid:
+                app = MDApp.get_running_app()
+                app.staff_id_value = row[0]
+                self.ids.uname.text=""
+                self.ids.upass.text=""
+                self.parent.current = "Menu"
+                app.root.ids.topbar.pos_hint = {"top": 1}
+                self.dialog=None
+                break
+            else:
+                if not self.dialog:
+                    self.dialog = MDDialog(
+                        text="Your username or password is incorrect, so please enter again.",
+                        buttons=[MDFlatButton(
+                            text="OK",
+                            theme_text_color="Custom",
+                            text_color=(1, 0.647, 0, 1),
+                            on_release=self.cancel_pressed
+                        )]
+                    )
+                self.dialog.open()
+
+```
+
+If the inputted username and password matches, it stores the user's `staff_id` from the `id` in the`users` table.
+This `staff_id` will be stored in `MDApp` as `staff_id_value`.
+Also, after the login, the text fields for the username and password become empty for the next login.
+The change in position of `topbar` means that hidden topbar in the home, sigup, and login screen will appear from the menu screen.
+After the success login, the page moves to "Menu" and break the for loop.
+
+In the case of username and password doesn't match with hash in the `users` table, it shows the error message.
+
+## Inventory (Success Criteria 2)
+To meet the success criteria 2 about the track of inventory
+```.py
+```
+
+```.py
+```
+
+```.py
+```
+
+
+## Take Order (Create candle) (Success Criteria 2, 4)
+To meet the success criteria 4 about the creation of candle, I made three pages to take order and make candle successfully.
+This order process divided into three pages `TakeOrderScreen`, `CheckScreen`, `SuccessOrderScreen`.
+
+### TakeOrderScreen
+```.py
+class TakeOrderScreen(MDScreen):
+    dialog = None
+    
+        def drop_menu(self, drop_item_element, drop_instance):
+        key = drop_instance.text
+        genre_d = {"Choose model":"model", "Choose wax":"wax", "Choose scent":"scent"}
+        for k,v in genre_d.items():
+            if key ==k:
+                genre_value = v
+        query = f"""
+        SELECT * from inventory where genre=?
+        """
+        results = db_connection.search_variable(query, genre_value, multiple=True)
+```
+I created  item drop-down lists which allows the user to choose ingredients and amount from the lists.
+It receives the drop-down lists' title as `key = drop_instance.text`, and by referring the `genre_d` dictionary, it recognizes the selected list's genre.
+After receive the genre, I connected to the database and obtain the items in the table `inventory` which `genre` is selected value.
+
+```.py
+        self.model = results
+        self.model_item=[]
+        self.model_item = [c[1] for c in self.model]
+
+        button_menu=[]
+        for item in self.model_item:
+            button_dict = {"text": str(item),
+                        "viewclass": "OneLineListItem",
+                        "on_release": lambda x=item: self.button_pressed(x)}
+            button_menu.append(button_dict)
+
+        self.menu = MDDropdownMenu(caller=drop_item_element,
+                                   ver_growth="down",
+                                   items=button_menu,
+                                   width_mult=4,
+                                   position="center"
+                                   )
+        self.menu.open()
+```
+The above query obtains the rows from `inventory` table which the genre matches, so I extracted the name from the table by using for loop.
+I added obtained item name values in the list `button_menu` and created dwop-down lists by using kv components.
+The selected item `x` is pass to the function `button_pressed` by using `lambda`.
+
+```.py
+    def button_pressed(self,x):
+        item = db_connection.search(f"SELECT * from inventory where name='{x}'")
+
+        label = self.ids[item[2]] #item[2] =genre
+        if label:
+            label.text = item[1]
+            self.ids.candle_image.source=f"Project_Images/{item[8]}"
+
+        self.menu.dismiss()
+```
+By referring the selected item received from `lambda`, obtain the selected item name from the table `inventory`.
+In the case of model, the image will change depending on the model the user choose.
+
+
+```.py
+        app = MDApp.get_running_app()
+        model=self.ids.model.text
+        wax=self.ids.wax.text
+        scent=self.ids.scent.text
+        package=self.ids.package.text
+        amount=self.ids.amount.text
+        print(model,wax,scent,package,amount)
+```
+
+After the "make more candle" button pressed, it received the selected items by referring the `MDLabel` texts.
+
+```.py
+        if len(model) <1 or len(wax) <1 or len(scent) <1 or len(package) <1 or len(amount) <1:
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    text="Please check the order again.",
+                    buttons=[
+                        MDFlatButton(
+                            text="CLOSE",
+                            theme_text_color="Custom",
+                            text_color=(1, 0.647, 0, 1),
+                            on_release=self.cancel_pressed)
+                    ],
+                )
+            self.dialog.open()
+```
+If any order is missing, the dialog shows the error message to ask the user to check the order.
+
+
+```.py
+        else:
+            model_id_query=f"""SELECT * from inventory where name=?"""
+            model_id = db_connection.search_variable(model_id_query,model,multiple=False)[0]
+            wax_id_query=f"""SELECT * from inventory where name=?"""
+            wax_id = db_connection.search_variable(wax_id_query,wax,multiple=False)[0]
+            scent_id_query=f"""SELECT * from inventory where name=?"""
+            scent_id = db_connection.search_variable(scent_id_query,scent,multiple=False)[0]
+
+            order_list = [model_id, wax_id, scent_id, package, amount]
+            print(order_list)
+            price = 0
+            for order in range(3):
+                price_query = f"""SELECT selling_price from inventory where id=?"""
+                each_price = db_connection.search_variable(price_query, order_list[order], multiple=False)[0]
+                price += each_price
+            if order_list[3] == 'Yes':
+                price += 30
+            total_price = price * int(amount)
+
+            query=f"""
+            INSERT INTO orders 
+            (model,wax,scent,package,amount,price,total_price,staff_id,date)values(
+            '{model_id}',
+            '{wax_id}',
+            '{scent_id}',
+            '{package}',
+            '{amount}',
+            '{price}',
+            '{total_price}',
+            '{app.staff_id_value}',
+            '{app.today_date}'
+            )"""
+
+            db_connection.run_query(query) #insert order in table orders
+            self.parent.current = "TakeOrder"
+            self.ids.model.text=""
+            self.ids.wax.text =""
+            self.ids.scent.text=""
+            self.ids.package.text=""
+            self.ids.amount.text=""
+```
+
+If the items are selected correctly, it obtains the item's ids amd price from the `inventory` table.
+The price of one candle is calculated by using for loop and multiply by the amount to lead to the total price.
+After the calculation, all the ids and price values are stored in the table `orders`.
+Then, the text fields are left empty for the next order.
+
+```.py
+    def go_to_check(self):
+        app = MDApp.get_running_app()
+        count_query="""
+        SELECT COUNT(*) FROM orders"""
+        count_result=db_connection.search(count_query)[0]
+
+        model = self.ids.model.text
+        wax = self.ids.wax.text
+        scent = self.ids.scent.text
+        package = self.ids.package.text
+        amount = self.ids.amount.text
+        print(model, wax, scent, package, amount)
+```
+
+After the "Go to check" button is pressed, it received the selected items by referring the `MDLabel` texts.
+It also counts the number or rows in the table `orders` to check the number of orders created in this order.
+
+
+```.py
+        if len(model) > 1 or len(wax) > 1 or len(scent) > 1 or len(package) > 1 or len(amount) > 1:#even if one section is filled
+            if len(model) < 1 or len(wax) < 1 or len(scent) < 1 or len(package) < 1 or len(amount) < 1:
+                if not self.dialog:
+                    self.dialog = MDDialog(
+                        text="Please check the order again.",
+                        buttons=[
+                            MDFlatButton(
+                                text="CLOSE",
+                                theme_text_color="Custom",
+                                text_color=(1, 0.647, 0, 1),
+                                on_release=self.cancel_pressed)
+                        ],
+                    )
+                self.dialog.open()
+```
+
+If at least one item is selected and missing some items, the dialog shows the error message to ask the user to check the order again.
+
+```.py
+            else:
+                model_id_query = f"""SELECT * from inventory where name=?"""
+                model_id = db_connection.search_variable(model_id_query, model, multiple=False)[0]
+                wax_id_query = f"""SELECT * from inventory where name=?"""
+                wax_id = db_connection.search_variable(wax_id_query, wax, multiple=False)[0]
+                scent_id_query = f"""SELECT * from inventory where name=?"""
+                scent_id = db_connection.search_variable(scent_id_query, scent, multiple=False)[0]
+
+                order_list = [model_id, wax_id, scent_id, package, amount]
+                print(order_list)
+                price = 0
+                for order in range(3):
+                    price_query = f"""SELECT selling_price from inventory where id=?"""
+                    each_price = db_connection.search_variable(price_query, order_list[order], multiple=False)[0]
+                    price += each_price
+                if order_list[3] == 'Yes':
+                    price += 30
+                total_price = price * int(amount)
+
+                query = f"""
+                        INSERT INTO orders 
+                        (model,wax,scent,package,amount,price,total_price,staff_id,date)values(
+                        '{model_id}',
+                        '{wax_id}',
+                        '{scent_id}',
+                        '{package}',
+                        '{amount}',
+                        '{price}',
+                        '{total_price}',
+                        '{app.staff_id_value}',
+                        '{app.today_date}'
+                        )"""
+                db_connection.run_query(query)
+                self.ids.model.text = ""
+                self.ids.wax.text = ""
+                self.ids.scent.text = ""
+                self.ids.package.text = ""
+                self.ids.amount.text = ""
+                self.parent.current="Check"
+```
+
+As same as the `make_more_candle()`, it stores the selected items and price in the table ` orders`, and moves to the page `CheckScreen`.
+
+```.py
+        elif count_result>1: #if there is no data in the text, but in the orders
+            self.parent.current = "Check"
+        elif count_result<1: #if there is no data in the orders
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    text="Please make the order.",
+                    buttons=[
+                        MDFlatButton(
+                            text="CLOSE",
+                            theme_text_color="Custom",
+                            text_color=(1, 0.647, 0, 1),
+                            on_release=self.cancel_pressed)
+                    ],
+                )
+            self.dialog.open()
+```
+
+The "Go to check" button works even if there is no selected items in the screen, but there is a order creted before.
+It allows the user to go to payment after they press "create more candle' button, but didn't order anything after that.
+
+### CheckScreen
+```.py
+    def on_pre_enter(self, *args):
+        columns_names = [('No.',40),('Model',70),('Wax', 40), ('Scent', 40),('Package', 40),('Price',40), ('Amount',30),('Total',50)]
+        self.data_tables = MDDataTable(
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .8},
+            use_pagination=True,
+            check=True,
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
+            rows_num=10,
+            column_data=columns_names,
+        )
+        # self.data_tables.bind(on_row_press=self.on_row_press)
+        self.data_tables.bind(on_check_press=self.checkbox_pressed)
+        self.add_widget(self.data_tables)
+        self.update()
+        
+    def update(self):
+        data = db_connection.search(query='SELECT id, model, wax, scent, package, price, amount, total_price FROM orders', multiple=True)
+        candle=db_connection.search(query=f"SELECT description from inventory, orders where inventory.id=orders.model")[0]
+        wax_name=db_connection.search(query=f"SELECT name from inventory, orders where inventory.id=orders.wax")[0]
+        scent_name=db_connection.search(query=f"SELECT name from inventory, orders where inventory.id=orders.scent")[0]
+        calculated_data = [(id,candle, wax_name, scent_name, package, price, amount, total_price) for
+                           id,model, wax, scent, package, price, amount, total_price in data]
+        self.data_tables.update_row_data(
+            None, calculated_data
+        )
+        total_price_query=db_connection.search(query="SELECT SUM(total_price) FROM orders")[0]
+        self.ids.total_price_label.text=f'¥ {total_price_query}'
+```
+It created the table of made orders by referring the table `orders`. Since the items are stored in the form of id in `inventory` table, it converted into the name for the display.
+
+```.py
+    def checkbox_pressed(self, table, current_row):
+        self.ids.select_item.text=f"Select: {str(current_row[0])}"
+        self.check_select=current_row
+```
+If the order is checked in the datatable, the selected order is showed in the `MDLabel` of id `select_item`.
+
+```.py
+    def item_delete(self):
+        m = re.findall(r'\d+', self.ids.select_item.text)
+        print(m[0])
+        item_id=int(m[0])
+        db_connection.run_query(query=f"""delete FROM orders WHERE id={item_id}""")
+        self.update()
+```
+If the delete button is pressed, the selected order is deleted from the table `orders`, and update the datatable.
+
+```.py
+    def lets_check(self):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                text="I would like to proceed with the payment. Is it okay?",
+                buttons=[
+                    MDFlatButton(
+                        text="CANCEL",
+                        theme_text_color="Custom",
+                        text_color=(1, 0.647, 0, 1),
+                        on_release=self.cancel_pressed
+                    ),
+                    MDFlatButton(
+                        text="PROCEED",
+                        theme_text_color="Custom",
+                        text_color=(1, 0.647, 0, 1),
+                        on_release=self.proceed_pressed
+                    ),
+                ],
+            )
+        self.dialog.open()
+        
+            def cancel_pressed(self,*args):
+        if self.dialog:
+            self.dialog.dismiss()
+
+```
+If the "Payment" button is pressed, the dialog confirm the user whether they want to make payment or not.
+
+
+```.py
+    def proceed_pressed(self,*args):
+        app = MDApp.get_running_app()
+
+        count_query="""
+        SELECT COUNT(*) FROM orders"""
+        count_result=db_connection.search(count_query)[0]
+        print(count_result)
+
+
+        if self.dialog:
+            order_history_query = """
+                INSERT INTO order_history (staff_id, date, model, wax, scent, package, amount)
+                SELECT staff_id, date, model, wax, scent, package, amount
+                FROM orders;
+            """
+            ledger_query = """
+                INSERT INTO ledger (order_id, staff_id, date, price,description)
+                SELECT id, staff_id, date, price,'sale'
+                FROM orders;
+            """
+
+            for i in range(count_result):
+                update_model_inventory = f"""
+                    UPDATE inventory
+                    SET amount = (SELECT amount FROM inventory WHERE inventory.id
+                         = (SELECT model FROM orders WHERE orders.id = {i+1})) 
+                         - (SELECT amount FROM orders WHERE orders.id = {i+1})
+                    WHERE inventory.id = (SELECT model FROM orders WHERE orders.id = {i+1}
+                    );
+                """
+                db_connection.run_query(update_model_inventory)
+
+                update_wax_inventory = f"""
+                                    UPDATE inventory
+                                    SET amount = (SELECT amount FROM inventory WHERE inventory.id
+                                         = (SELECT wax FROM orders WHERE orders.id = {i + 1})) 
+                                         - (SELECT amount FROM orders WHERE orders.id = {i + 1})
+                                    WHERE inventory.id = (SELECT wax FROM orders WHERE orders.id = {i + 1}
+                                    );
+                                """
+                db_connection.run_query(update_wax_inventory)
+
+                update_scent_inventory = f"""
+                                    UPDATE inventory
+                                    SET amount = (SELECT amount FROM inventory WHERE inventory.id
+                                         = (SELECT scent FROM orders WHERE orders.id = {i + 1})) 
+                                         - (SELECT amount FROM orders WHERE orders.id = {i + 1})
+                                    WHERE inventory.id = (SELECT scent FROM orders WHERE orders.id = {i + 1}
+                                    );
+                                """
+                db_connection.run_query(update_scent_inventory)
+
+                update_package_inventory = f"""
+                                    UPDATE inventory
+                                    SET amount = (SELECT amount FROM inventory WHERE inventory.id= 16)
+                                         - (SELECT amount FROM orders WHERE orders.id = {i + 1} and orders.package = 'Yes')
+                                    WHERE inventory.id = 16
+                                    ;
+                                """
+                db_connection.run_query(update_package_inventory)
+
+            db_connection.run_query(order_history_query)
+            db_connection.run_query(ledger_query)
+
+            db_connection.run_query(query="""DELETE FROM orders""")
+            self.dialog.dismiss()
+            self.parent.current = "Success"
+```
+After the "Proceed" is pressed in the confirmation dialog, count the number of orders made and insert in the variable `count_result`.
+Orders are recorded in the `order_history` table, and profit is recorded in the `ledger` table as the description is "sale".
+
+```.py
+        if self.dialog:
+            order_history_query = """
+                INSERT INTO order_history (staff_id, date, model, wax, scent, package, amount)
+                SELECT staff_id, date, model, wax, scent, package, amount
+                FROM orders;
+            """
+            ledger_query = """
+                INSERT INTO ledger (order_id, staff_id, date, price,description)
+                SELECT id, staff_id, date, price,'sale'
+                FROM orders;
+            """
+
+            for i in range(count_result):
+                update_model_inventory = f"""
+                    UPDATE inventory
+                    SET amount = (SELECT amount FROM inventory WHERE inventory.id
+                         = (SELECT model FROM orders WHERE orders.id = {i+1})) 
+                         - (SELECT amount FROM orders WHERE orders.id = {i+1})
+                    WHERE inventory.id = (SELECT model FROM orders WHERE orders.id = {i+1}
+                    );
+                """
+                db_connection.run_query(update_model_inventory)
+
+                update_wax_inventory = f"""
+                                    UPDATE inventory
+                                    SET amount = (SELECT amount FROM inventory WHERE inventory.id
+                                         = (SELECT wax FROM orders WHERE orders.id = {i + 1})) 
+                                         - (SELECT amount FROM orders WHERE orders.id = {i + 1})
+                                    WHERE inventory.id = (SELECT wax FROM orders WHERE orders.id = {i + 1}
+                                    );
+                                """
+                db_connection.run_query(update_wax_inventory)
+
+                update_scent_inventory = f"""
+                                    UPDATE inventory
+                                    SET amount = (SELECT amount FROM inventory WHERE inventory.id
+                                         = (SELECT scent FROM orders WHERE orders.id = {i + 1})) 
+                                         - (SELECT amount FROM orders WHERE orders.id = {i + 1})
+                                    WHERE inventory.id = (SELECT scent FROM orders WHERE orders.id = {i + 1}
+                                    );
+                                """
+                db_connection.run_query(update_scent_inventory)
+
+                update_package_inventory = f"""
+                                    UPDATE inventory
+                                    SET amount = (SELECT amount FROM inventory WHERE inventory.id= 16)
+                                         - (SELECT amount FROM orders WHERE orders.id = {i + 1} and orders.package = 'Yes')
+                                    WHERE inventory.id = 16
+                                    ;
+                                """
+                db_connection.run_query(update_package_inventory)
+
+            db_connection.run_query(order_history_query)
+            db_connection.run_query(ledger_query)
+
+            db_connection.run_query(query="""DELETE FROM orders""")
+            self.dialog.dismiss()
+            self.parent.current = "Success"
+```
+To meet the **success criteria2** of track of inventory, the amount in `inventory` table is updated depending on the number of ingredients used.
+After the all queries done, the system removes all the orders in the `orders` table, and move to the `SuccessOrderScreen`.
+
+```.py
+class SuccessOrderScreen(MDScreen):
+    def go_back_to_menu(self):
+        self.parent.current = "Menu"
+```
+In the success order screen, there is a button to go back to the menu.
+
+## Order History (Success Criteria 4)
+By considering the requirement of the track of orders, the orders created is recorded in the `order_history` table, and displays the table in the form od `MDDataTable`.
+```.py
+   def on_pre_enter(self, *args):
+        columns_names = [('Staff',50),('Prodct', 100), ('Wax', 100),('Scent',100)]
+
+        self.data_tables = MDDataTable(
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .7},
+            use_pagination=True,
+            check=True,
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
+            rows_num=10,
+            column_data=columns_names
+        )
+        self.data_tables.bind(on_row_press=self.row_pressed)
+        self.data_tables.bind(on_check_press=self.checkbox_pressed)
+        self.add_widget(self.data_tables)
+        self.update()
+
+    def update(self):
+        data = db_connection.search(query="""SELECT users.username AS staff, inventory.name AS candle, inventory.name AS wax, inventory.name AS scent
+                                                FROM users
+                                                JOIN order_history ON order_history.staff_id = users.id
+                                                JOIN inventory ON order_history.model = inventory.id OR order_history.wax = inventory.id OR order_history.scent = inventory.id;
+                                    """, multiple=True)
+        # Perform calculations and update the data before updating the MDDataTable
+        calculated_data = [(staff, candle, wax, scent) for
+                           staff, candle, wax, scent in data]
+        self.data_tables.update_row_data(
+            None, calculated_data
+        )
+
+```
+I set the column name in the first part and created the `MDDataTable`. The content of the datatable is obtained and updated in the `update()`.
+
+
+
+## Description (Success Criteria 5)
+Too meet the requirement from the client about the checking description of teh candle, I decided to develop the description screen.
+In the description page, the items are listed in the form of cards, and if the user pressed the icon in the right top of the cards, the description will be shown in the dialog.
+
+```.py
+    def on_enter(self, *args):
+        count_query = """
+                        SELECT COUNT(*) FROM inventory"""
+        count_result = db_connection.search(count_query)[0]
+        box_count = count_result  # 追加する MDBoxLayout の数を指定
+        self.update_layout(box_count)
+        print(f'box_cont: {box_count}')
+
+    def update_layout(self, box_count, box_layout=None):
+        container = self.ids.container_desc
+        container.clear_widgets()  # delete all children widget
+        source='Project_Images/'
+
+        for i in range(box_count):
+            count = i+1
+            image_query = f"""SELECT image, name, id from inventory where id={count}"""
+            material_name = db_connection.search_variable(image_query, multiple=False)[1]
+            image_name = db_connection.search_variable(image_query, multiple=False)[0]
+            id_numb = db_connection.search_variable(image_query, multiple=False)[2]
+            print(f'{material_name}, {source+image_name}',{id_numb})
+            box_layout = MDBoxLayout(orientation='vertical', adaptive_size=True, spacing="4dp")
+
+            box_layout.add_widget(
+                MD3Card(
+                    MDRelativeLayout(
+                        MDIconButton(
+                            text=f"{id_numb}",
+                            icon="dots-vertical",
+                            pos_hint={"top": 1, "right": 1},
+                            md_bg_color= "FFC697",
+                            on_press= lambda x=id_numb: self.press_material(x)
+                        ),
+                        MDLabel(
+                            text=material_name.capitalize(),
+                            adaptive_size=True,
+                            color="grey",
+                            pos_hint={"bottom": 1, "left": 1},
+                            size_hint_x=1,
+                            halign="center"
+                        ),
+                        Image(
+                            source=f'{source+image_name}',
+                            size_hint_y= None,
+                            height= '100dp', # Set the desired height
+                            width= '200dp',  # Set the desired width
+                            pos_hint = {"center_x": .5, "center_y": .5}
+            )
+                    ),
+                    line_color=(0.2, 0.2, 0.2, 0.8),
+                    orientation="vertical",
+                    padding="4dp",
+                    size_hint=(None, None),
+                    size=("300dp", "150dp"),
+                    md_bg_color="ffdead",
+                    shadow_softness=0,
+                    shadow_offset=(0, 0),
+                )
+            )
+
+            container.add_widget(box_layout)  # 新しい MDBoxLayout を追加
+```
+
+First I counted the number of items in the table `inventory` to determine the number of `MDBoxLayout` which I will add.
+Then, I obtained the image, name, and id of items from the table `inventory`.
+In the creation of MD3Card, I made Icon, Label, Image with clear UI.
+
+
+```.py
+    def press_material(self, numb):
+        number=int(numb.text)
+        text_query=f"""SELECT description from inventory where id={number}"""
+        text_desc = db_connection.search(text_query,multiple=False)[0]
+
+        if not self.dialog:
+            self.dialog = MDDialog(
+                text=f"{text_desc}",
+                buttons=[
+                    MDFlatButton(
+                        text="CLOSE",
+                        theme_text_color="Custom",
+                        text_color=(1, 0.647, 0, 1),
+                        on_release=self.cancel_pressed)
+                ],
+            )
+        else:
+            self.dialog.text=f"{text_desc}"
+        self.dialog.open()
+```
+When the IconButton pressed, it receives the id number by the function `lambda` in the previous section, and refers that id number for the description display.
+The id number is an id in `inventory` table, and it refers to the `description` column.
+If the dialog does not exist, it creates a dialog, if exists, it updates the description.
+
+
+## Ledger (Success Criteria 3, 6)
+To meet the **success criteria 3** of trak of money, I decided to create the ledger table.
+The table shows the date, the name of staff, description, price, and balance for both sale and purchase orders.
+
+```.py
+    def on_pre_enter(self, *args):
+        columns_names = [('Date',80),('Staff', 80), ('Description', 80),('Price', 80),('Balance',100)]
+        # columns_names = [column for column in columns_names if column[0] not in ['id', 'genre']]
+        self.data_tables = MDDataTable(
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .65},
+            use_pagination=True,
+            check=True,
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
+            rows_num=10,
+            column_data=columns_names
+        )
+        self.data_tables.bind(on_row_press=self.row_pressed)
+        self.add_widget(self.data_tables)
+        self.update()
+
+    def update(self):
+        data = db_connection.search(query='SELECT date, staff_id, description, price, balance FROM ledger', multiple=True)
+        staff_name = db_connection.search(
+            query='SELECT users.username FROM users, ledger where ledger.staff_id = users.id',
+            multiple=False)[0]
+        # Perform calculations and update the data before updating the MDDataTable
+        calculated_data = [(date, staff_name, description, price, balance) for
+                           date, staff_id, description, price, balance in data]
+        print(data)
+        print(calculated_data)
+        self.data_tables.update_row_data(
+            None, calculated_data
+        )
+```
+As same as the other datatables , I set the name of the column, create `MDDataTable`, update the content in the table in `update()`.
+In this case, I used `ledger` table for the money part and `users` table for username part.
+
+
+To meet the success criteria 6
+```.py
+```
+
+```.py
+```
+
+```.py
+```
+## UI
+
 
 ## Citation
 [^1]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
@@ -355,5 +1108,5 @@ Then, the page automatically move to the log in.
 [^3]: Juviler, Jamie. “What Is GUI? Graphical User Interfaces, Explained.” HubSpot Blog, 30 August 2023, https://blog.hubspot.com/website/what-is-gui. Accessed 10 March 2024.
 [^4]:“Python: Console Application Structure | by Areyana | Analytics Vidhya.” Medium, 3 March 2020, https://medium.com/analytics-vidhya/python-console-application-structure-ab337c5e94d7. Accessed 10 March 2024.
 [^5]:“SQLite Advantages and Disadvantages - javatpoint.” Javatpoint, https://www.javatpoint.com/sqlite-advantages-and-disadvantages. Accessed 10 March 2024.
-[^6]:
+[^6]: Rodríguez, Andrés, et al. “NavigationDrawer - KivyMD 1.1.1 documentation.” KivyMD's documentation, 2022, https://kivymd.readthedocs.io/en/1.1.1/components/navigationdrawer/index.html. Accessed 10 March 2024.
   
