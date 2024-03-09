@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from kivy.core.window import Window
@@ -7,6 +8,7 @@ from kivy.properties import NumericProperty, ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import ScreenManager
+from kivy.utils import get_color_from_hex
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRaisedButton, MDFlatButton, MDRectangleFlatButton, MDIconButton
@@ -39,131 +41,135 @@ db_connection = DatabaseWorker(name=db_name)
 
 db_connection.create()
 # db_connection.close()
-# class HomeScreen(MDScreen):
-#     pass
-#     def go_signup(self):
-#         self.parent.current = "Signup"
-#
-#     def go_login(self):
-#         self.parent.current = "Login"
-#
-# class SignupScreen(MDScreen):
-#     dialog=None
-#     def try_signup(self):
-#         uname = self.ids.uname.text
-#         upass = self.ids.upass.text
-#         upass_conf = self.ids.upass_conf.text
-#
-#         create = """CREATE TABLE if not exists users(
-#                 id INTEGER PRIMARY KEY,
-#                 username VARCHAR(30),
-#                 hash TEXT);"""
-#         db_connection.run_query(create)
-#
-#         if upass != upass_conf:
-#             if not self.dialog:
-#                 self.dialog = MDDialog(
-#                     text="Please check the password again.",
-#                     buttons=[MDFlatButton(
-#                         text="OK",
-#                         theme_text_color="Custom",
-#                         text_color=(1, 0.647, 0, 1),
-#                         on_release=self.cancel_pressed
-#                     )]
-#                 )
-#             self.dialog.open()
-#
-#         else:
-#             hash_text = f"name {uname},pass {upass}"
-#             hash = make_hash(hash_text)
-#
-#             results = db_connection.search(query="SELECT * FROM users", multiple=True)
-#             for row in results:
-#                 signature = row[2]
-#                 valid = check_hash(hashed_text=signature, text=hash_text)
-#                 print(valid)
-#
-#                 if valid:
-#                     if not self.dialog:
-#                         self.dialog = MDDialog(
-#                             text="Your password is invalid, so please enter again.",
-#                             buttons=[MDFlatButton(
-#                                 text="OK",
-#                                 theme_text_color="Custom",
-#                                 text_color=(1, 0.647, 0, 1),
-#                                 on_release=self.cancel_pressed
-#                             )]
-#                         )
-#                     self.dialog.open()
-#
-#                 else:
-#                     query = f"""
-#                     INSERT into users (username, hash)
-#                     values ('{uname}','{hash}');
-#                     """
-#
-#                 db_connection.run_query(query)
-#                 self.ids.uname.text=""
-#                 self.ids.upass.text=""
-#                 self.ids.upass_conf.text=""
-#                 self.parent.current = "Login"
-#     def cancel_pressed(self, *args):
-#         if self.dialog:
-#             self.dialog.dismiss()
-#
-#     def go_back_to_home(self):
-#         self.parent.current = "Home"
-#
-# class LoginScreen(MDScreen): #Login
-#     dialog = None
-#     def try_login(self):
-#         uname = self.ids.uname.text
-#         upass = self.ids.upass.text
-#         query="SELECT * FROM users"
-#         results= db_connection.search(query=query,multiple=True)
-#
-#         for row in results:
-#             signature = row[2]
-#             hash_text=f"name {uname},pass {upass}"
-#             valid=check_hash(hashed_text=signature, text=hash_text)
-#
-#             if valid:
-#                 app = MDApp.get_running_app()
-#                 app.staff_id_value = row[0]
-#                 print(f'staff_id: {app.staff_id_value}')
-#                 self.ids.uname.text=""
-#                 self.ids.upass.text=""
-#                 self.parent.current = "Menu"
-#                 app.root.ids.topbar.pos_hint = {"top": 1}
-#                 print(valid)
-#                 self.dialog=None
-#                 break
-#             else:
-#                 if not self.dialog:
-#                     self.dialog = MDDialog(
-#                         text="Your username or password is incorrect, so please enter again.",
-#                         buttons=[MDFlatButton(
-#                             text="OK",
-#                             theme_text_color="Custom",
-#                             text_color=(1, 0.647, 0, 1),
-#                             on_release=self.cancel_pressed
-#                         )]
-#                     )
-#                 self.dialog.open()
-#
-#     def cancel_pressed(self, *args):
-#         if self.dialog:
-#             self.dialog.dismiss()
-#
-#     def go_back_to_home(self):
-#         self.parent.current = "Home"
+class HomeScreen(MDScreen):
+    pass
+    def go_signup(self):
+        self.parent.current = "Signup"
 
-class CustomToolbar(MDBoxLayout):
-    title = ""
-    box_orientation = "horizontal"
-    box_size_hint = (1, 1)
-    box_pos_hint = {'center_x': 0.5, 'center_y': 0.5}
-    box_spacing = dp(0)
+    def go_login(self):
+        self.parent.current = "Login"
+
+class SignupScreen(MDScreen):
+    dialog=None
+    def try_signup(self):
+        uname = self.ids.uname.text
+        upass = self.ids.upass.text
+        upass_conf = self.ids.upass_conf.text
+
+        create = """CREATE TABLE if not exists users(
+                id INTEGER PRIMARY KEY,
+                username VARCHAR(30),
+                hash TEXT);"""
+        db_connection.run_query(create)
+
+        if not 0<len(uname)<16 or not 0<len(upass)<9 or not 0<len(upass_conf)<9:
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    text="Please check the number of letters again.",
+                    buttons=[MDFlatButton(
+                        text="OK",
+                        theme_text_color="Custom",
+                        text_color=(1, 0.647, 0, 1),
+                        on_release=self.cancel_pressed
+                    )]
+                )
+            self.dialog.open()
+        elif upass != upass_conf:
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    text="Please check the password again.",
+                    buttons=[MDFlatButton(
+                        text="OK",
+                        theme_text_color="Custom",
+                        text_color=(1, 0.647, 0, 1),
+                        on_release=self.cancel_pressed
+                    )]
+                )
+            self.dialog.open()
+
+        else:
+            hash_text = f"name {uname},pass {upass}"
+            hash = make_hash(hash_text)
+            results = db_connection.search(query="SELECT * FROM users", multiple=True)
+            for row in results:
+                signature = row[2]
+                valid = check_hash(hashed_text=signature, text=hash_text)
+                print(valid)
+
+                if valid:
+                    if not self.dialog:
+                        self.dialog = MDDialog(
+                            text="Your password is invalid, so please enter again.",
+                            buttons=[MDFlatButton(
+                                text="OK",
+                                theme_text_color="Custom",
+                                text_color=(1, 0.647, 0, 1),
+                                on_release=self.cancel_pressed
+                            )]
+                        )
+                    self.dialog.open()
+                else:
+                    query = f"""
+                    INSERT into users (username, hash)
+                    values ('{uname}','{hash}');
+                    """
+                    db_connection.run_query(query)
+                    self.ids.uname.text=""
+                    self.ids.upass.text=""
+                    self.ids.upass_conf.text=""
+                    self.parent.current = "Login"
+    def cancel_pressed(self, *args):
+        if self.dialog:
+            self.dialog.dismiss()
+        self.dialog=None
+
+    def go_back_to_home(self):
+        self.parent.current = "Home"
+
+class LoginScreen(MDScreen): #Login
+    dialog = None
+    def try_login(self):
+        uname = self.ids.uname.text
+        upass = self.ids.upass.text
+        query="SELECT * FROM users"
+        results= db_connection.search(query=query,multiple=True)
+
+        for row in results:
+            signature = row[2]
+            hash_text=f"name {uname},pass {upass}"
+            valid=check_hash(hashed_text=signature, text=hash_text)
+
+            if valid:
+                app = MDApp.get_running_app()
+                app.staff_id_value = row[0]
+                print(f'staff_id: {app.staff_id_value}')
+                self.ids.uname.text=""
+                self.ids.upass.text=""
+                self.parent.current = "Menu"
+                app.root.ids.topbar.pos_hint = {"top": 1}
+                print(valid)
+                self.dialog=None
+                break
+            else:
+                if not self.dialog:
+                    self.dialog = MDDialog(
+                        text="Your username or password is incorrect, so please enter again.",
+                        buttons=[MDFlatButton(
+                            text="OK",
+                            theme_text_color="Custom",
+                            text_color=(1, 0.647, 0, 1),
+                            on_release=self.cancel_pressed
+                        )]
+                    )
+                self.dialog.open()
+
+    def cancel_pressed(self, *args):
+        if self.dialog:
+            self.dialog.dismiss()
+        self.dialog=None
+
+    def go_back_to_home(self):
+        self.parent.current = "Home"
 
 class MenuHeader(MDBoxLayout):
     '''An instance of the class that will be added to the menu header.'''
@@ -191,7 +197,7 @@ class MenuScreen(MDScreen):
         app = MDApp.get_running_app()
         print(f'staff_id: {app.staff_id_value}')
         key = instance.text
-        menu_d ={"Take Order": "TakeOrder", "Check Description": "Description", "Check Order": "CheckOrder", "Check Inventory": "Inventory", "Check Ledger": "Ledger", "Logout":"Home"}
+        menu_d ={"Take Order": "TakeOrder", "Check Description": "Description", "Order History": "CheckOrder", "Check Inventory": "Inventory", "Check Ledger": "Ledger", "Logout":"Home"}
         for k,v in menu_d.items():
             if key == k:
                 screen = v
@@ -205,7 +211,6 @@ class TakeOrderScreen(MDScreen):
     def build(self):
         pass
     def drop_menu(self, drop_item_element, drop_instance):
-
         key = drop_instance.text
         print(drop_instance)
         genre_d = {"Choose model":"model", "Choose wax":"wax", "Choose scent":"scent"}
@@ -272,10 +277,13 @@ class TakeOrderScreen(MDScreen):
 
     def button_pressed(self,x):
         item = db_connection.search(f"SELECT * from inventory where name='{x}'")
+        print(f'item{item}')
         price=item[5]
         label = self.ids[item[2]] #item[2] =genre
         if label:
             label.text = item[1]
+            self.ids.candle_image.source=f"Project_Images/{item[8]}"
+
         self.menu.dismiss()
 
     def button_pressed_amount(self,x):
@@ -445,64 +453,106 @@ class CheckScreen(MDScreen):
     dialog=None
     def __init__(self, **kwargs):
         super(CheckScreen, self).__init__(**kwargs)
-    def on_enter(self, *args):
-        count_query = """
-                SELECT COUNT(*) FROM orders"""
-        count_result = db_connection.search(count_query)[0]
-        box_count = count_result  # 追加する MDBoxLayout の数を指定
-        self.update_layout(box_count)
-        print(box_count)
 
-    def update_layout(self, box_count, box_layout=None):
-        container = self.ids.container
-        container.clear_widgets()  # 現在のすべての子要素を削除
-        for i in range(box_count):
-            count=i+1
-            box_layout = MDGridLayout(
-                cols=7)
-            with box_layout.canvas.before:
-                Color(0, 0, 0, 1)  # Set the background color to black
-                Line(rectangle=(box_layout.x, box_layout.y, box_layout.width, box_layout.height), width=1)
+    def on_pre_enter(self, *args):
+        columns_names = [('No.',40),('Model',70),('Wax', 40), ('Scent', 40),('Package', 40),('Price',40), ('Amount',30),('Total',50)]
+        self.data_tables = MDDataTable(
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .8},
+            use_pagination=True,
+            check=True,
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
+            rows_num=10,
+            column_data=columns_names,
+        )
+        # self.data_tables.bind(on_row_press=self.on_row_press)
+        self.data_tables.bind(on_check_press=self.checkbox_pressed)
+        self.add_widget(self.data_tables)
+        self.update()
+    def update(self):
+        data = db_connection.search(query='SELECT id, model, wax, scent, package, price, amount, total_price FROM orders', multiple=True)
+        candle=db_connection.search(query=f"SELECT description from inventory, orders where inventory.id=orders.model")[0]
+        wax_name=db_connection.search(query=f"SELECT name from inventory, orders where inventory.id=orders.wax")[0]
+        scent_name=db_connection.search(query=f"SELECT name from inventory, orders where inventory.id=orders.scent")[0]
+        calculated_data = [(id,candle, wax_name, scent_name, package, price, amount, total_price) for
+                           id,model, wax, scent, package, price, amount, total_price in data]
+        self.data_tables.update_row_data(
+            None, calculated_data
+        )
+        total_price_query=db_connection.search(query="SELECT SUM(total_price) FROM orders")[0]
+        self.ids.total_price_label.text=f'¥ {total_price_query}'
+    def checkbox_pressed(self, table, current_row):
+        self.ids.select_item.text=f"Select: {str(current_row[0])}"
+        self.check_select=current_row
+        print(current_row[0])
 
-            candle_name_query=f"""
-            SELECT description from inventory, orders where inventory.id=orders.model and orders.id={count}"""
-            candle_name=db_connection.search_variable(candle_name_query,multiple=False)[0]
-            candle_name_table = MDLabel(text=f'{candle_name} Candle')
-            box_layout.add_widget(candle_name_table)
-            print(f'box_layout.children: {box_layout.children}')
+    def item_delete(self):
+        m = re.findall(r'\d+', self.ids.select_item.text)
+        print(m[0])
+        item_id=int(m[0])
+        db_connection.run_query(query=f"""delete FROM orders WHERE id={item_id}""")
+        self.update()
 
-            wax_name_query=f"""
-            SELECT name from inventory, orders where inventory.id=orders.wax and orders.id={count}"""
-            wax_name=db_connection.search(wax_name_query,multiple=False)[0]
-            wax_name_table = MDLabel(text=f'{wax_name}')
-            box_layout.add_widget(wax_name_table)
 
-            scent_name_query=f"""
-            SELECT name from inventory, orders where inventory.id=orders.scent and orders.id={count}"""
-            scent_name=db_connection.search(scent_name_query,multiple=False)[0]
-            scent_name_table = MDLabel(text=scent_name)
-            box_layout.add_widget(scent_name_table)
-
-            price_name_query = f"""
-                        SELECT price from orders"""
-            price_name = db_connection.search(price_name_query, False)[0]
-            price_name_table = MDLabel(text=f'{str(price_name)}')
-            box_layout.add_widget(price_name_table)
-
-            mark=MDLabel(text='X')
-            box_layout.add_widget(mark)
-
-            amount_name_query = f"""
-                             SELECT amount from orders where orders.id={count}"""
-            amount_name = db_connection.search(amount_name_query, False)[0]
-            amount_name_table = MDLabel(text=f'{str(amount_name)}')
-            box_layout.add_widget(amount_name_table)
-
-            button = MDRaisedButton(text=f'Delete')
-            box_layout.add_widget(button)
-
-            container.add_widget(box_layout)  # 新しい MDBoxLayout を追加
-            print(f'box_layout.children: {box_layout.children}')
+    # def on_enter(self, *args):
+    #     count_query = """
+    #             SELECT COUNT(*) FROM orders"""
+    #     count_result = db_connection.search(count_query)[0]
+    #     box_count = count_result  # 追加する MDBoxLayout の数を指定
+    #     self.update_layout(box_count)
+    #     print(box_count)
+    #
+    # def update_layout(self, box_count, box_layout=None):
+    #     container = self.ids.container
+    #     container.clear_widgets()  # 現在のすべての子要素を削除
+    #     for i in range(box_count):
+    #         count=i+1
+    #         box_layout = MDGridLayout(
+    #             cols=7)
+    #         with box_layout.canvas.before:
+    #             Color(0, 0, 0, 1)  # Set the background color to black
+    #             Line(rectangle=(box_layout.x, box_layout.y, box_layout.width, box_layout.height), width=1)
+    #
+    #         candle_name_query=f"""
+    #         SELECT description from inventory, orders where inventory.id=orders.model and orders.id={count}"""
+    #         candle_name=db_connection.search_variable(candle_name_query,multiple=False)[0]
+    #         candle_name_table = MDLabel(text=f'{candle_name} Candle')
+    #         box_layout.add_widget(candle_name_table)
+    #         print(f'box_layout.children: {box_layout.children}')
+    #
+    #         wax_name_query=f"""
+    #         SELECT name from inventory, orders where inventory.id=orders.wax and orders.id={count}"""
+    #         wax_name=db_connection.search(wax_name_query,multiple=False)[0]
+    #         wax_name_table = MDLabel(text=f'{wax_name}')
+    #         box_layout.add_widget(wax_name_table)
+    #
+    #         scent_name_query=f"""
+    #         SELECT name from inventory, orders where inventory.id=orders.scent and orders.id={count}"""
+    #         scent_name=db_connection.search(scent_name_query,multiple=False)[0]
+    #         scent_name_table = MDLabel(text=scent_name)
+    #         box_layout.add_widget(scent_name_table)
+    #
+    #         price_name_query = f"""
+    #                     SELECT price from orders"""
+    #         price_name = db_connection.search(price_name_query, False)[0]
+    #         price_name_table = MDLabel(text=f'{str(price_name)}')
+    #         box_layout.add_widget(price_name_table)
+    #
+    #         mark=MDLabel(text='X')
+    #         box_layout.add_widget(mark)
+    #
+    #         amount_name_query = f"""
+    #                          SELECT amount from orders where orders.id={count}"""
+    #         amount_name = db_connection.search(amount_name_query, False)[0]
+    #         amount_name_table = MDLabel(text=f'{str(amount_name)}')
+    #         box_layout.add_widget(amount_name_table)
+    #
+    #         button = MDRaisedButton(text=f'Delete')
+    #         box_layout.add_widget(button)
+    #
+    #         container.add_widget(box_layout)  # 新しい MDBoxLayout を追加
+    #         print(f'box_layout.children: {box_layout.children}')
 
     def lets_check(self):
         if not self.dialog:
@@ -663,6 +713,7 @@ class DescriptionScreen(MDScreen):
                             text=f"{id_numb}",
                             icon="dots-vertical",
                             pos_hint={"top": 1, "right": 1},
+                            md_bg_color= "FFC697",
                             on_press= lambda x=id_numb: self.press_material(x)
                         ),
                         MDLabel(
@@ -683,14 +734,12 @@ class DescriptionScreen(MDScreen):
                     ),
                     line_color=(0.2, 0.2, 0.2, 0.8),
                     orientation="vertical",
-                    # background=f'{source+image_name}',
-                    # style=style,
                     padding="4dp",
                     size_hint=(None, None),
                     size=("300dp", "150dp"),
-                    # md_bg_color=styles[style],
-                    shadow_softness=2,
-                    shadow_offset=(0, 1)
+                    md_bg_color="ffdead",
+                    shadow_softness=0,
+                    shadow_offset=(0, 0),
                 )
             )
 
@@ -731,7 +780,6 @@ class DescriptionScreen(MDScreen):
 
 class CheckOrderScreen(MDScreen):
     dialog=None
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.data_tables = None
@@ -742,12 +790,12 @@ class CheckOrderScreen(MDScreen):
         # columns_names = [column for column in columns_names if column[0] not in ['id', 'genre']]
 
         self.data_tables = MDDataTable(
-            size_hint=(.9, .7),
-            pos_hint={'center_x': .5, 'top': .85},
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .7},
             use_pagination=True,
             check=True,
-            background_color_header="#FFCEF6",
-            background_color_selected_cell="e4514f",
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
             rows_num=10,
             column_data=columns_names
         )
@@ -784,17 +832,11 @@ class CheckOrderScreen(MDScreen):
 
 class InventoryScreen(MDScreen):
     dialog=None
+    calculate=True
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.data_tables = None
         self.selected_rows = []
-
-    def set_column_widths(self, column_data_percentage):
-        total_percentage = sum(column_data_percentage)
-        for i, column_info in enumerate(self.column_data):
-            column_name, _ = column_info
-            percentage = column_data_percentage[i] / total_percentage
-            self.column_data[i] = (column_name, percentage)
 
     def on_pre_enter(self, *args):
         columns_names = [('number',50),('material', 100), ('amount', 100),('shortage',100)]
@@ -808,29 +850,60 @@ class InventoryScreen(MDScreen):
             background_color_header="#FFC697",
             background_color_selected_cell="f5deb3",
             rows_num=10,
-            column_data=columns_names
+            column_data=columns_names,
         )
         self.data_tables.bind(on_row_press=self.row_pressed)
         self.data_tables.bind(on_check_press=self.checkbox_pressed)
         self.add_widget(self.data_tables)
         self.update()
 
+
     def update(self):
         data = db_connection.search(query='SELECT id, name, amount, default_amount FROM inventory', multiple=True)
         # Perform calculations and update the data before updating the MDDataTable
-        calculated_data = [(id, name, amount, default_amount - amount) for
+        calculated_data = [(id, name, amount, (default_amount - amount)) for
                            id, name, amount, default_amount in data]
-        print(data)
+        # print(data)
         print(calculated_data)
         self.data_tables.update_row_data(
             None, calculated_data
         )
 
+    def calculate_pressed(self):
+        if self.calculate:
+            data = db_connection.search(query='SELECT id, name, amount, default_amount FROM inventory', multiple=True)
+            calculated_data = [(id, name, amount, (default_amount - amount)) for
+                               id, name, amount, default_amount in data]
+            calculated_data_2=[]
+            for row in calculated_data:
+                if row[3] >=5:
+                    calculated_data_2.append(row)
+
+            self.data_tables.update_row_data(
+                None, calculated_data_2
+            )
+            self.calculate=None
+            self.ids.calculate_btn.text="Original"
+            self.ids.calculate_btn.icon = "backup-restore"
+
+        else:
+            data = db_connection.search(query='SELECT id, name, amount, default_amount FROM inventory', multiple=True)
+            # Perform calculations and update the data before updating the MDDataTable
+            calculated_data = [(id, name, amount, (default_amount - amount)) for
+                               id, name, amount, default_amount in data]
+            # print(data)
+            print(calculated_data)
+            self.data_tables.update_row_data(
+                None, calculated_data
+            )
+            self.calculate = True
+            self.ids.calculate_btn.text = "Calculate"
+            self.ids.calculate_btn.icon = "calculator"
+
     def row_pressed(self, table, cell):
         print(f"Value clicked {cell.text}")
 
     def checkbox_pressed(self, table, current_row):
-        print(f"Record checked {current_row[1]}")
         self.ids.checked_item.text=str(current_row[1])
         # Here you could delete or update the record
 
@@ -906,14 +979,14 @@ class InventoryOrderScreen(MDScreen):
         self.data_tables = None
         self.selected_rows = []
     def on_pre_enter(self, *args):
-        columns_names = [('name',100),('price', 50), ('amount', 50),('total',100), ('delete',50)]
+        columns_names = [('No.',100),('Name',100),('Price', 50), ('Amount', 50),('Total',100)]
         self.data_tables = MDDataTable(
-            size_hint=(.9, .7),
-            pos_hint={'center_x': .5, 'top': .85},
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .8},
             use_pagination=True,
-            check=False,
-            background_color_header="#FFCEF6",
-            background_color_selected_cell="e4514f",
+            check=True,
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
             rows_num=10,
             column_data=columns_names,
         )
@@ -922,13 +995,16 @@ class InventoryOrderScreen(MDScreen):
         self.add_widget(self.data_tables)
         self.update()
     def update(self):
-        data = db_connection.search(query='SELECT material, price, amount, total FROM purchases', multiple=True)
+        data = db_connection.search(query='SELECT id, material, price, amount, total FROM purchases', multiple=True)
         material=db_connection.search(query='SELECT inventory.name FROM inventory,purchases where inventory.id = purchases.material', multiple=False)[0]
-        calculated_data = [(material, amount, price, total, "DELETE") for
-                           name, amount, price, total in data]
+        calculated_data = [(id, material, amount, price, total) for
+                           id,name, amount, price, total in data]
         self.data_tables.update_row_data(
             None, calculated_data
         )
+        total_price_query = db_connection.search(query="SELECT SUM(total) FROM purchases")[0]
+        self.ids.total_price_label.text = f'¥ {total_price_query}'
+
 
     def on_row_press(self, table, instance_row):
         if hasattr(instance_row, '__iter__'):
@@ -938,10 +1014,15 @@ class InventoryOrderScreen(MDScreen):
         else:
             print(f"Row pressed - Unable to unpack values from non-iterable object")
 
-    def inv_checkbox_pressed(self, table, current_row, cell):
-        print(f"Record checked {current_row}")
-        second_value = current_row[1]
-        self.ids.checked_item.text = str(second_value)
+    def inv_checkbox_pressed(self, table, current_row):
+        self.ids.select_item.text = f"Select: {str(current_row[0])}"
+
+    def item_delete(self):
+        m = re.findall(r'\d+', self.ids.select_item.text)
+        print(m[0])
+        item_id=int(m[0])
+        db_connection.run_query(query=f"""delete FROM purchases WHERE id={item_id}""")
+        self.update()
 
     def make_purchase(self):
         if not self.dialog:
@@ -1006,6 +1087,7 @@ class InventoryOrderScreen(MDScreen):
 
 class LedgerScreen(MDScreen):
     dialog = None
+    ascending = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -1016,12 +1098,12 @@ class LedgerScreen(MDScreen):
         columns_names = [('Date',80),('Staff', 80), ('Description', 80),('Price', 80),('Balance',100)]
         # columns_names = [column for column in columns_names if column[0] not in ['id', 'genre']]
         self.data_tables = MDDataTable(
-            size_hint=(.9, .7),
-            pos_hint={'center_x': .5, 'top': .75},
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .65},
             use_pagination=True,
             check=True,
-            background_color_header="#FFCEF6",
-            background_color_selected_cell="e4514f",
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
             rows_num=10,
             column_data=columns_names
         )
@@ -1047,25 +1129,47 @@ class LedgerScreen(MDScreen):
         print(f"Value clicked {cell.text}")
 
     def date_descending_pressed(self):
-        descending_query="""
-        SELECT date, staff_id, description, price, balance FROM ledger
-        ORDER BY id DESC;  -- 降順
-        """
-        descending_data = db_connection.search(query=descending_query, multiple=True)
-        staff_name = db_connection.search(
-            query='SELECT users.username FROM users, ledger where ledger.staff_id = users.id',
-            multiple=False)[0]
+        if self.ascending:
+            descending_query="""
+            SELECT date, staff_id, description, price, balance FROM ledger
+            ORDER BY id DESC;  -- 降順
+            """
+            descending_data = db_connection.search(query=descending_query, multiple=True)
+            staff_name = db_connection.search(
+                query='SELECT users.username FROM users, ledger where ledger.staff_id = users.id',
+                multiple=False)[0]
+            # Perform calculations and update the data before updating the MDDataTable
+            calculated_data = [(date, staff_name, description, price, balance) for
+                               date, staff_id, description, price, balance in descending_data]
+            # updateメソッドを呼び出す
+            self.data_tables.update_row_data(
+                None, calculated_data
+            )
+            self.ascending=None
+            self.ids.date_descending.text="Date Ascending"
+            self.ids.date_descending.icon = "sort-calendar-ascending"
 
-        # Perform calculations and update the data before updating the MDDataTable
-        calculated_data = [(date, staff_name, description, price, balance) for
-                           date, staff_id, description, price, balance in descending_data]
-        print(descending_data)
-        print(calculated_data)
+        else:
+            ascending_query = """
+                        SELECT date, staff_id, description, price, balance FROM ledger
+                        ORDER BY id ASC;  -- 降順
+                        """
+            descending_data = db_connection.search(query=ascending_query, multiple=True)
+            staff_name = db_connection.search(
+                query='SELECT users.username FROM users, ledger where ledger.staff_id = users.id',
+                multiple=False)[0]
+            # Perform calculations and update the data before updating the MDDataTable
+            calculated_data = [(date, staff_name, description, price, balance) for
+                               date, staff_id, description, price, balance in descending_data]
+            # updateメソッドを呼び出す
+            self.data_tables.update_row_data(
+                None, calculated_data
+            )
+            self.ascending = True
+            self.ids.date_descending.text = "Date Descending"
+            self.ids.date_descending.icon = "sort-calendar-descending"
 
-        # updateメソッドを呼び出す
-        self.data_tables.update_row_data(
-            None, calculated_data
-        )
+
 
     def go_back_to_menu(self):
         self.parent.current = "Menu"
@@ -1078,46 +1182,9 @@ class project(MDApp):
     print(today_date)
 
     def build(self):
+        # self.theme_cls.primary_palette = "Orange"
         Window.size = (1000, 800)
-        # self.theme_cls.primary_palette = "Yellow"  # "Purple", "Red"
         self.theme_cls.theme_style = "Light"
-        # button_list = ["Home","Take Order", "Description", "Check Order", "Purchase material", "Ledger", "Logout"]
-        # button_menu = []
-        #
-        # for action in button_list:
-        #     button_dict = {"text": str(action),
-        #                    "viewclass": "OneLineListItem",
-        #                    "on_release": lambda x=action: self.menu_callback(x)}
-        #     button_menu.append(button_dict)
-        #
-        # self.menu = MDDropdownMenu(
-        #     header_cls=MenuHeader(),
-        #     # ver_growth="down",
-        #     items=button_menu,
-        #     width_mult=5,
-        #     position="auto",
-        #     height=dp(1000),
-        #     pos_hint={"top":1,"left":1}
-        # )
-        # return screen_manager
-
-    # def click_menu(self,button):
-    #     self.menu.caller = button
-    #     self.menu.open()
-
-    # def menu_callback(self, text_item):
-    #     self.menu.dismiss()
-    #     menu_d={"Home":"Menu","Take Order":"TakeOrder", "Description":"Description", "Check Order":"CheckOrder", "Purchase material":"Inventory", "Ledger":"Ledger", "Logout":"Logout"}
-    #     for k,v in menu_d.items():
-    #         if k==text_item:
-    #             screen=v
-    #     app = MDApp.get_running_app()
-    #     screen_manager = app.root
-    #     if screen_manager.current != screen:
-    #         screen_manager.current = screen
-
-    # def button_pressed(self, text_item):
-    #     print(text_item)
 
     def drop_menu(self):
         pass

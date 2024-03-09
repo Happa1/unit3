@@ -19,12 +19,12 @@ MDScreen:
 
         MDScreenManager:
             id: screen_manager
-#            HomeScreen:
-#                name: "Home"
-#            SignupScreen:
-#                name: "Signup"
-#            LoginScreen:
-#                name: "Login"
+            HomeScreen:
+                name: "Home"
+            SignupScreen:
+                name: "Signup"
+            LoginScreen:
+                name: "Login"
             MenuScreen:
                 name: "Menu"
             TakeOrderScreen:
@@ -50,8 +50,8 @@ MDScreen:
             id: topbar
             title: "Navigation Drawer"
             elevation: 4
-            pos_hint: {"top": 1}
-            md_bg_color: "#e7e4c0"
+            pos_hint: {"top": 2} #when not home it is 1
+            md_bg_color: "e7e4c0"
             specific_text_color: "#4a4939"
             left_action_items:[['menu', lambda x: nav_drawer.set_state("open")]]
 
@@ -67,11 +67,9 @@ MDScreen:
 
 <NavigationMenu>:
     MDNavigationDrawerHeader:
-        title: "Candliqe"
+        title: "Candlique"
         title_color: "#4a4939"
-    #                    text: "Markup:サイズ40　[size=40]ヒラギノ丸ゴ ProN W4 (デフォルト)[/size]"
         font_family: "JetBrainsMono"
-    #                    text: f"[color=#000000][font=Roboto]Logged[/font] [font=RobotoMedium]in![/font] [font=Icons]{md_icons['login']}[/font][/color]"
         spacing: "4dp"
         padding: "12dp", 0, 0, "56dp"
 
@@ -101,7 +99,7 @@ MDScreen:
 
     DrawerClickableItem:
         icon: "list-box-outline"
-        text: "Check Order"
+        text: "Order History"
         on_press:
             root.nav_drawer.set_state("close")
             root.screen_manager.current = "CheckOrder"
@@ -133,194 +131,289 @@ MDScreen:
             root.screen_manager.current = "Home"
 
 
-#        on_press:
-#            root.go_back_to_home()
-#            app.changed()
+<HomeScreen>:
+    FitImage:
+        source: 'Project_Images/candlehome.jpeg'
+        opacity: .5
 
-#<HomeScreen>:
-#    FitImage:
-#        source: 'Project_Images/home2.jpeg'
-#
-#    MDBoxLayout:
-#        size_hint: .8,.8
-#        pos_hint: {'center_x':.5, 'center_y':.5}
-#        background_color: (1, 0, 0, 0.5)  # RGBA format (Red, Green, Blue, Alpha)
+    MDBoxLayout:
+        size_hint: .8,.8
+        pos_hint: {'center_x':.5, 'center_y':.5}
+        background_color: (1, 0, 0, 0.5)  # RGBA format (Red, Green, Blue, Alpha)
 
-#
-#    MDLabel:
-#        text: "Candlique"
-#        font_size: "100px"
-#        halign: "center"
-#        pos_hint: {'center_x':.5, 'center_y':.8}
-#
-#    MDRaisedButton:
-#        size_hint: .3, .08
-#        pos_hint: {'center_x':.3, 'center_y':.3}
-#        style: "standard"
-#        text: "Sign up"
-#        on_press:
-#            root.go_signup()
-#            app.changed()
-#
-#    MDRaisedButton:
-#        size_hint: .3, .08
-#        pos_hint: {'center_x':.7, 'center_y':.3}
-#        style: "standard"
-#        text: 'Login'
-#        on_press:
-#            root.go_login()
-#            app.changed()
-#
-#<SignupScreen>:
-#    FitImage:
-#        source: 'Project_Images/background2.jpeg'
-#
-#    MDBoxLayout:
-#        orientation: "vertical"
-#        size_hint: .8, .8
-#        pos_hint: {'center_x':.5, 'center_y':.5}
+    MDLabel:
+        text: "Candlique"
+        font_size: "100px"
+        halign: "center"
+        pos_hint: {'center_x':.5, 'center_y':.8}
 
-#
-#        MDBoxLayout:
-#            orientation: "horizontal"
-#            size_hint: 1, .25
-#            halign: "center"
-#
-#
-#            MDRaisedButton:
-#                id: back
-#                text: "<< Back"
-#                size_hint: .1, .2
-#                pos_hint: {'center_x':.5, 'center_y':.5}
-#                on_press:
-#                    root.go_back_to_home()
-#                    app.changed()
-#
-#            MDLabel:
-#                text: "Sign up"
-#                font_size: "50"
-#                pos_hint: {'center_x':.2, 'center_y':.5}
-#                size_hint: .9, .25
-#                halign: 'center'
-#
-#
-#        MDBoxLayout:
-#            orientation: "vertical"
-#            size_hint: 1, .25
-#
-#            MDLabel:
-#                text: "Username"
-#
-#            MDTextField:
-#                id: uname
-#                hint_text:"Enter username"
-#
-#        MDBoxLayout:
-#            orientation: "vertical"
-#            size_hint: 1, .25
-#
-#            MDLabel:
-#                text: "Password"
-#
-#            MDTextField:
-#                id: upass
-#                hint_text:"Enter password"
-#                password: True
-#
-#        MDBoxLayout:
-#            orientation: "vertical"
-#            size_hint: 1, .25
-#
-#            MDLabel:
-#                text: "Password (confirmation)"
-#
-#            MDTextField:
-#                id: upass_conf
-#                hint_text:"Enter password again"
-#                password: True
-#
-#        MDLabel:
-#            id: error_label
-#            size_hint: 1, .1
-#            text: ""
-#            halign: "center"
-#
-#        MDRaisedButton:
-#            id: signup
-#            text: "SignUp"
-#            on_press: root.try_signup()
-#            size_hint: 0.3, .1
-#            pos_hint: {'center_x':.5, 'center_y':.5}
-#
-#
-#<LoginScreen>:
-#    FitImage:
-#        source: 'ER_diagram'
-#
-#    MDBoxLayout:
-#        orientation: "vertical"
-#        size_hint: .8, .8
-#        pos_hint: {'center_x':.5, 'center_y':.5}
-#
-#
-#        MDBoxLayout:
-#            orientation: "horizontal"
-#            size_hint: 1, .25
-#            halign: "center"
-#
-#
-#            MDRaisedButton:
-#                id: back
-#                text: "<< Back"
-#                size_hint: .1, .2
-#                pos_hint: {'center_x':.5, 'center_y':.5}
-#                on_press:
-#                    root.go_back_to_home()
-#                    app.changed()
-#
-#            MDLabel:
-#                text: "Login"
-#                font_size: "50"
-#                pos_hint: {'center_x':.2, 'center_y':.5}
-#                size_hint: .9, .25
-#                halign: 'center'
-#
-#
-#        MDBoxLayout:
-#            orientation: "vertical"
-#            size_hint: 1, .25
-#
-#            MDLabel:
-#                text: "Username"
-#
-#            MDTextField:
-#                id: uname
-#                hint_text:"Enter username"
-#
-#        MDBoxLayout:
-#            orientation: "vertical"
-#            size_hint: 1, .25
-#
-#            MDLabel:
-#                text: "Password"
-#
-#            MDTextField:
-#                id: upass
-#                hint_text:"Enter password"
-#                password: True
-#
-#        MDLabel:
-#            id: error_label
-#            size_hint: 1, .1
-#            text: ""
-#
-#        MDRaisedButton:
-#            id: signup
-#            text: "Login"
-#            on_press: root.try_login()
-#            size_hint: 0.3, .1
-#            pos_hint: {'center_x':.5, 'center_y':.5}
-#
+    MDRaisedButton:
+        md_bg_color: "FFF9CE"
+        text_color:"a0522d"
+        line_color: "a0522d"
+        line_width: 2
+        font_size: 40
+        size_hint: .3, .08
+        pos_hint: {'center_x':.3, 'center_y':.3}
+        style: "standard"
+        text: "Sign up"
+        on_press:
+            root.go_signup()
+            app.changed()
+
+    MDRaisedButton:
+        md_bg_color: "FFF9CE"
+        text_color:"a0522d"
+        line_color: "a0522d"
+        line_width: 2
+        font_size: 40
+        size_hint: .3, .08
+        pos_hint: {'center_x':.7, 'center_y':.3}
+        style: "standard"
+        text: 'Login'
+        on_press:
+            root.go_login()
+            app.changed()
+
+<SignupScreen>:
+    FitImage:
+        source: 'Project_Images/raceimage.jpeg'
+        opacity: .5
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, .75
+        pos_hint: {'center_x':.5, 'center_y':.5}
+
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .03
+                pos_hint: {'center_x':0, 'center_y':.8}
+                on_press:
+                    root.go_back_to_home()
+                    app.changed()
+
+            MDLabel:
+                text: "Sign up"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.8}
+
+        MDBoxLayout:
+            orientation:"vertical"
+            md_bg_color: "ffffff"
+            padding: 25
+            spacing: dp(15)
+            opacity:.8
+            size_hint_x: .7
+            pos_hint:{'center_x':.5, 'center_y':.5}
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y:  .25
+                size_hint_x: None
+                width: dp(400)
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
+                MDLabel:
+                    text: "Username"
+
+                MDTextField:
+                    id: uname
+                    hint_text:"Enter username"
+                    max_text_length: 15
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y:  .25
+                size_hint_x: None
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                width: dp(400)
+
+                MDLabel:
+                    text: "Password"
+
+                MDFloatLayout:
+                    orientation: "horizontal"
+
+                    MDTextField:
+                        id: upass
+                        hint_text:"Enter password"
+                        password: True
+                        icon_left: "key-variant"
+                        pos_hint: {"center_x":.5,"center_y": .5}
+                        max_text_length: 8
+
+                    MDIconButton:
+                        icon: "eye-off"
+                        pos_hint: {"center_x":.95,"center_y": .5}
+                        theme_text_color: "Hint"
+                        on_release:
+                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                            upass.password = False if upass.password is True else True
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint: 1, .25
+                size_hint_x: None
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                width: dp(400)
+
+                MDLabel:
+                    text: "Password (confirmation)"
+
+                MDFloatLayout:
+                    orientation: "horizontal"
+
+                    MDTextField:
+                        id: upass_conf
+                        hint_text:"Enter password again"
+                        password: True
+                        icon_left: "key-variant"
+                        pos_hint: {"center_x":.5,"center_y": .5}
+                        max_text_length: 8
+
+
+                    MDIconButton:
+                        icon: "eye-off"
+                        pos_hint: {"center_x":.95,"center_y": .5}
+                        theme_text_color: "Hint"
+                        on_release:
+                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                            upass_conf.password = False if upass_conf.password is True else True
+
+
+                MDFillRoundFlatButton:
+                    id: signup
+                    text: "SignUp"
+                    text_color: "a0522d"
+                    font_size: "50"
+                    color: "a0522d"
+                    line_color:"a0522d"
+                    opacity: 1
+                    md_bg_color: "FFF9CE"
+                    on_press: root.try_signup()
+                    size_hint: .3, .2
+                    pos_hint: {'center_x':.5, 'center_y':.5}
+
+
+
+<LoginScreen>:
+    FitImage:
+        source: 'Project_Images/raceimage.jpeg'
+        opacity: .5
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, .75
+        pos_hint: {'center_x':.5, 'center_y':.5}
+
+
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .03
+                pos_hint: {'center_x':0, 'center_y':.8}
+                on_press:
+                    root.go_back_to_home()
+                    app.changed()
+
+
+            MDLabel:
+                text: "Login"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.8}
+
+        MDBoxLayout:
+            orientation:"vertical"
+            md_bg_color: "ffffff"
+            padding: 25
+            spacing: dp(15)
+            opacity:.8
+            size_hint_x: .7
+            pos_hint:{'center_x':.5, 'center_y':.5}
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y:  .25
+                size_hint_x: None
+                width: dp(400)
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
+                MDLabel:
+                    text: "Username"
+
+                MDTextField:
+                    id: uname
+                    hint_text:"Enter username"
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y:  .25
+                size_hint_x: None
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                width: dp(400)
+
+                MDLabel:
+                    text: "Password"
+
+                MDFloatLayout:
+                    orientation: "horizontal"
+
+                    MDTextField:
+                        id: upass
+                        hint_text:"Enter password"
+                        password: True
+                        icon_left: "key-variant"
+                        pos_hint: {"center_x":.5,"center_y": .5}
+
+
+                    MDIconButton:
+                        icon: "eye-off"
+                        pos_hint: {"center_x":.95,"center_y": .5}
+                        theme_text_color: "Hint"
+                        on_release:
+                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                            upass.password = False if upass.password is True else True
+
+
+            MDFillRoundFlatButton:
+                id: signup
+                text: "Login"
+                text_color: "a0522d"
+                font_size: "50"
+                color: "a0522d"
+                line_color:"a0522d"
+                opacity: 1
+                md_bg_color: "FFF9CE"
+                on_press: root.try_login()
+                size_hint: .3, .05
+                pos_hint: {'center_x':.5, 'center_y':.5}
+
 
 <MenuScreen>:
     FitImage:
@@ -397,7 +490,7 @@ MDScreen:
             MDFillRoundFlatButton:
                 id: CheckOrder
                 style: "filled"
-                text: "Check Order"
+                text: "Order History"
                 text_color: "a0522d"
                 font_size: "50"
                 color: "a0522d"
@@ -511,6 +604,7 @@ MDScreen:
                         id: model
                         font_size: "40"
                         text:""
+                        color:"cd5c5c"
                         pos_hint: {'center_x':.5, 'center_y':.5}
 
                 MDDropDownItem:
@@ -519,16 +613,18 @@ MDScreen:
                     height:"40"
                     size_hint_y:None
                     on_release: root.drop_menu(self,dropdown_model1)
-
-            MDBoxLayout:
-                orientation:"vertical"
-                pos_hint: {'center_x':.5, 'center_y':.5}
-
-                MDLabel:
-                    text: "Model"
-                    halign:"center"
-                    font_size: "40"
-                    pos_hint: {'center_x':.5, 'center_y':.5}
+            Image:
+                id: candle_image
+                source: 'Project_Images/candlehome.jpeg'
+#            MDBoxLayout:
+#                orientation:"vertical"
+#                pos_hint: {'center_x':.5, 'center_y':.5}
+#
+#                MDLabel:
+#                    text: "Model"
+#                    halign:"center"
+#                    font_size: "40"
+#                    pos_hint: {'center_x':.5, 'center_y':.5}
 #                    pos_hint: {'center_x': .7, 'center_y': 1}
 
         MDBoxLayout:
@@ -552,6 +648,7 @@ MDScreen:
                     MDLabel:
                         id: wax
                         text:""
+                        color:"cd5c5c"
                         font_size: 40
                         pos_hint: {'center_x':.5, 'center_y':.5}
                 MDDropDownItem:
@@ -576,6 +673,7 @@ MDScreen:
                         pos_hint: {'center_x':.5, 'center_y':.5}
                     MDLabel:
                         id: amount
+                        color:"cd5c5c"
                         font_size: 40
                         pos_hint: {'center_x':.5, 'center_y':.5}
                 MDDropDownItem:
@@ -608,6 +706,7 @@ MDScreen:
                     MDLabel:
                         id: scent
                         text:""
+                        color:"cd5c5c"
                         font_size: "40"
                         pos_hint: {'center_x': .5, 'center_y': .5}
 
@@ -635,6 +734,7 @@ MDScreen:
                     MDLabel:
                         id: package
                         text:""
+                        color:"cd5c5c"
                         pos_hint: {'center_x': .5, 'center_y': .5}
 
                 MDDropDownItem:
@@ -682,7 +782,7 @@ MDScreen:
     name: 'TakeOrder'
     md_bg_color:"ffefd5"
 
-    MDBoxLayout:
+    MDFloatLayout:
         orientation: "vertical"
         spacing: dp(20)
         size_hint: .75, .75
@@ -691,7 +791,7 @@ MDScreen:
         MDFloatLayout:
             orientation: "horizontal"
             size_hint: .9, .1
-            pos_hint: {'center_x':.5, 'center_y':.5}
+            pos_hint: {'center_x':.5, 'center_y':.95}
             halign: "center"
 
             MDRaisedButton:
@@ -713,17 +813,58 @@ MDScreen:
                 size_hint: 1, .1
                 pos_hint: {'center_x':.5, 'center_y':.5}
 
-        ScrollView:
-            MDBoxLayout:
-                id:container
-                orientation:"vertical"
-
         MDFloatLayout:
-            MDRaisedButton:
+            orientation:"horizontal"
+            pos_hint:{'center_x':.5, 'center_y':.2}
+            spacing: dp(20)
+
+            MDLabel:
+                id:select_item
+                text:"Select: "
+                font_size:40
+                size_hint: .25,.1
+                pos_hint:{'center_x':.05, 'center_y':.3}
+
+            MDRectangleFlatIconButton:
+                id:delete_btn
+                text:"Delete"
+                icon:"delete-outline"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "FFF9CE"
+                size_hint: .2,.1
+                pos_hint: {'center_x':.3, 'center_y':.3}
+                padding:10
+                on_press: root.item_delete()
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint: .25,.1
+                pos_hint: {'center_x':.6, 'center_y':.3}
+                MDLabel:
+                    text: "Total"
+                    font_size:20
+                    size_hint: 1,1
+#                    pos_hint: {'center_x':.5, 'center_y':.5}
+                MDLabel:
+                    id: total_price_label
+                    font_size:50
+                    text:"totalprice"
+#                    pos_hint: {'center_x':.5, 'center_y':.3}
+
+
+            MDRoundFlatIconButton:
                 id: check_button
                 text: "Check"
-                size_hint: .3, .1
-                pos_hint:{'center_x':.5, 'center_y':.5}
+                icon:"cart-outline"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width: 2
+                size_hint: .25,.1
+                pos_hint: {'right':1, 'center_y':.3}
                 on_release: root.lets_check()
 
 <SuccessOrderScreen>:
@@ -732,16 +873,20 @@ MDScreen:
 
     MDBoxLayout:
         orientation: "vertical"
+        pos_hint: {'center_x':.5, 'center_y':.5}
+        size_hint: .75,.75
 
         MDLabel:
             text:"Ordered Successfully"
+            font_size: 80
+            halign:"center"
 
         MDRaisedButton:
             id: back
             text: "Go back to menu"
             md_bg_color:"FFC697"
             text_color:"a0522d"
-            size_hint: .1, .4
+            size_hint: .3, .1
             pos_hint: {'center_x':.5, 'center_y':.5}
             on_press:
                 root.go_back_to_menu()
@@ -796,30 +941,38 @@ MDScreen:
 
 <CheckOrderScreen>:
     name: 'CheckOrder'
+    md_bg_color:"ffefd5"
 
-    CustomToolbar:
-        title: 'Menu'
-        box_orientation: "horizontal"
-        box_size_hint: (0.8, 0.35)
-        box_pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        box_spacing: dp(20)
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, 1
+        pos_hint: {'center_x':.5, 'center_y':.5}
 
-        MDRaisedButton:
-            id: back
-            text: "<< Back"
-            size_hint: .1, .05
-            md_bg_color:"FFC697"
-            text_color:"a0522d"
-            pos_hint: {'center_x':.2, 'center_y':.9}
-            on_press:
-                root.go_back_to_menu()
-                app.changed()
-        MDLabel:
-            pos_hint: {'center_x':.5, 'center_y':.9}
-            text: 'Order History'
-            font_style: 'H2'
-            halign: 'center'
-            size_hint: 0.8, 0.1
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'top':.8}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .03
+                pos_hint: {'center_x':0, 'center_y':.8}
+                on_press:
+                    root.go_back_to_menu()
+                    app.changed()
+
+            MDLabel:
+                text: "Order History"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.8}
 
 <InventoryScreen>:
     name: 'Inventory'
@@ -855,6 +1008,20 @@ MDScreen:
                 font_size: 60
                 size_hint: 1, .1
                 pos_hint: {'center_x':.5, 'center_y':.8}
+
+            MDRectangleFlatIconButton:
+                id:calculate_btn
+                text:"Calculate"
+                icon:"calculator"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width:2
+                size_hint: .2,.1
+                pos_hint: {'center_x':.9, 'center_y':.8}
+                padding:10
+                on_press: root.calculate_pressed()
 
 
         MDFloatLayout:
@@ -911,74 +1078,143 @@ MDScreen:
 
 <InventoryOrderScreen>:
     name: 'InventoryOrder'
+    md_bg_color:"ffefd5"
 
-    CustomToolbar:
-        title: 'Menu'
-        box_orientation: "horizontal"
-        box_size_hint: (0.8, 0.35)
-        box_pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        box_spacing: dp(20)
+    MDFloatLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, .75
+        pos_hint: {'center_x':.5, 'center_y':.5}
 
-        MDRaisedButton:
-            id: back
-            text: "<< Back"
-            size_hint: .1, .05
-            md_bg_color:"FFC697"
-            text_color:"a0522d"
-            pos_hint: {'center_x':.2, 'center_y':.9}
-            on_press:
-                root.go_back_to_menu()
-                app.changed()
-        MDLabel:
-            pos_hint: {'center_x':.5, 'center_y':.9}
-            text: 'Inventory List'
-            font_style: 'H2'
-            halign: 'center'
-            size_hint: 0.8, 0.1
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.95}
+            halign: "center"
 
-        MDRaisedButton:
-            id: make_purchase
-            text:"Purchase"
-            size_hint: .25, 0.8
-            pos_hint: {'center_x':.5, 'center_y':.1}
-            padding:10
-            on_press: root.make_purchase()
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .03
+                pos_hint: {'center_x':0, 'center_y':.8}
+                on_press:
+                    root.go_back_to_menu()
+                    app.changed()
+
+            MDLabel:
+                text: "Inventory Order"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.8}
+
+        MDFloatLayout:
+            orientation:"horizontal"
+            pos_hint:{'center_x':.5, 'center_y':.2}
+            spacing: dp(20)
+
+            MDLabel:
+                id:select_item
+                text:"Select: "
+                font_size:40
+                size_hint: .25,.1
+                pos_hint:{'center_x':.05, 'center_y':.3}
+
+            MDRectangleFlatIconButton:
+                id:delete_btn
+                text:"Delete"
+                icon:"delete-outline"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "FFF9CE"
+                size_hint: .2,.1
+                pos_hint: {'center_x':.3, 'center_y':.3}
+                padding:10
+                on_press: root.item_delete()
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint: .25,.1
+                pos_hint: {'center_x':.6, 'center_y':.3}
+                MDLabel:
+                    text: "Total"
+                    font_size:20
+                    size_hint: 1,1
+#                    pos_hint: {'center_x':.5, 'center_y':.5}
+                MDLabel:
+                    id: total_price_label
+                    font_size:50
+                    text:"totalprice"
+#                    pos_hint: {'center_x':.5, 'center_y':.3}
+
+            MDRectangleFlatIconButton:
+                id: make_purchase
+                text:"Purchase"
+                icon: "credit-card-outline"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width: 2
+                size_hint: .25, .1
+                pos_hint: {'right':1, 'center_y':.3}
+                on_press: root.make_purchase()
+
+
 
 <LedgerScreen>:
     name: 'Ledger'
+    md_bg_color:"ffefd5"
 
-    CustomToolbar:
-        title: 'Menu'
-        box_orientation: "horizontal"
-        box_size_hint: (0.8, 0.35)
-        box_pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        box_spacing: dp(20)
+    MDFloatLayout:
+        orientation: "vertical"
+        spacing: dp(20)
+        size_hint: .75, .75
+        pos_hint: {'center_x':.5, 'center_y':.5}
 
-        MDRaisedButton:
-            id: back
-            text: "<< Back"
-            size_hint: .1, .05
-            md_bg_color:"FFC697"
-            text_color:"a0522d"
-            pos_hint: {'center_x':.2, 'center_y':.9}
-            on_press:
-                root.go_back_to_menu()
-                app.changed()
-        MDLabel:
-            pos_hint: {'center_x':.5, 'center_y':.9}
-            text: 'Ledger'
-            font_style: 'H2'
-            halign: 'center'
-            size_hint: 0.8, 0.1
+        MDFloatLayout:
+            orientation: "horizontal"
+            size_hint: .9, .1
+            pos_hint: {'center_x':.5, 'center_y':.95}
+            halign: "center"
+
+            MDRaisedButton:
+                id: back
+                text: "<< Back"
+                md_bg_color:"FFC697"
+                text_color:"a0522d"
+                size_hint: .1, .03
+                pos_hint: {'center_x':0, 'center_y':.8}
+                on_press:
+                    root.go_back_to_menu()
+                    app.changed()
+
+            MDLabel:
+                text: "Ledger"
+                font_size: "50"
+                halign: "center"
+                font_size: 60
+                size_hint: 1, .1
+                pos_hint: {'center_x':.5, 'center_y':.8}
 
         MDBoxLayout:
             size_hint: .3, 0.1
             pos_hint: {'center_x':.5, 'center_y':.8}
             orientation: "horizontal"
 
-            MDRaisedButton:
+            MDRectangleFlatIconButton:
                 id: date_descending
-                text: "Date"
+                text: "Date Descending"
+                icon: "sort-calendar-ascending"
+                md_bg_color: "FFF9CE"
+                icon_color:"a0522d"
+                text_color:"a0522d"
+                line_color: "a0522d"
+                line_width: 2
                 pos_hint: {'center_x':.3, 'center_y':.5}
                 size_hint: .1,.8
                 on_press: root.date_descending_pressed()
