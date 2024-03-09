@@ -1,11 +1,11 @@
 # Unit3 Project
-
-**Fig.1**
+![candle_shop.jpeg](Project_md_image%2Fcandle_shop.jpeg)
+**Fig.1** Image of the candle shop. https://www.buttercraneshopping.co.uk/yankee_candle
 
 # Criteria A: Planning
 
 ## Problem definition (Client Identification)
-The client, a locan entrepreneur M, opened sustainable candle shop,"Candelique", just a month ago.
+The client, a locan entrepreneur M.M., opened sustainable candle shop,"Candelique", just a month ago.
 Candelique is at the forefront of innovation in the candle industry, blending sustainability with cutting-edge designs. 
 Candles in her shop are popular for its sustainability and cute designs, so many customers come every day. 
 The more customers come than she expected, and she only uses paper to track the order of candle materials. 
@@ -26,10 +26,9 @@ Considering the client's requirements, a GUI (Graphical User Interface) applicat
 - mistakes on tracking inventory on paper
     ->the application keeps track of the number of materials which changes by the purchase of materials and order by customer. It also shows what kind of materials are lacking. 
 - memorization of description of materials
-    ->
+    ->the application shows the description of each raw material when staff click the button.
 - running out of inventory due to a lack of analysis of inventory and popularity of candle
-
-
+    -> the application automatically calculates the recommended amount of refinement based on the sale of the calculation.
 
 ## Tools of my solution
 By considering the requirements of the client, I decided to use a GUI (Graphical User Interface) application for the development. 
@@ -55,22 +54,47 @@ https://www.redswitches.com/blog/advantages-and-disadvantages-of-python/#:~:text
 https://www.javatpoint.com/sqlite-advantages-and-disadvantages
 
 
-## Structure of my solution
-
-
 ## Success Criteria
-1. The application has signup and login system that shop staff can be login by username and password.
-2. The application keeps track of inventory of candle materials.
-3. The application keeps track of money of purchase for materials and order from customers.
-4. The application create a system to create a candle by using.
-5. Client can see the description of each raw materials when they click the button.
-6. Client automatically calculated the amount of purchase of materials next month depending on the inventory and also the popularity of candle. 
+1. The GUI application has a signup and login system that shop staff can login with a username and password. 
+(Issue Tackled: “It is not clear who purchases materials or takes an order and handles money when recording on the paper”)
+2. The GUI application keeps track of the inventory of candle materials.
+(Issue Tackld: “Many materials run out due to a defective inventory list”)
+3. The GUI application keeps track of money of purchase for materials and orders from customers.
+(Issue Tackled: “Shop staff forget to record the material purchased and keeping records of inventory and money on paper leads to shop staff being more likely to make mistakes, and the balance of money doesn't match due to stealing by staff.”)
+4. The GUI application creates a system to create a candle.
+(Issue Tackled: “We need to make a candle with sustainable materials.”)
+5. The GUI application shows the description of each raw material when the client clicks the button.
+(Issue Tackled: “Shop staff can’t remember all the descriptions of materials.”)
+6. The GUI application automatically calculated the amount of purchase of materials next month depending on the inventory and also the popularity of the candle. 
+(Issue Tackled: “Since it is a new shop and due to the large number of customers, the popular materials run out quickly.”)
 
 # Criteria B: Design
 
+## System Diagram
+![system_diagram.jpg](Project_md_image%2Fsystem_diagram.jpg)
+**Fig.1**
+
+
 ## ER Diagram
+![ER_diagram.jpg](Project_md_image%2FER_diagram.jpg)
+
+## UML Diagram
+![UML_diagram.jpg](Project_md_image%2FUML_diagram.jpg)
+
+
+## Wireframe
+![wire_frame.jpg](Project_md_image%2Fwire_frame.jpg)
 
 ## Flow Diagrams
+### Screen Change
+![Screen_change.jpg](Project_md_image%2FScreen_change.jpg)
+
+### Login
+![Login_flow.jpg](Project_md_image%2FLogin_flow.jpg)
+
+
+### Create Candle
+![Purchase.jpg](Project_md_image%2FPurchase.jpg)
 
 # Criteria C: Development
 
