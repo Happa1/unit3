@@ -265,6 +265,8 @@ Users make username and user password for the signup, and the system create hash
 From file `project.py`:
 
 ```.py
+class SignupScreen(MDScreen):
+    dialog=None
     def try_signup(self):
         uname = self.ids.uname.text
         upass = self.ids.upass.text
@@ -274,6 +276,78 @@ From file `project.py`:
 To receive the data inputted in the GUI application, I connected the inputted username and user password by referring the `ids` of those `MDTextField`.
 Store the inputted username and password in the variable, `uname`, `upass`, `upass_conf`.
 
+```.py
+        if not 0<len(uname)<16 or not 0<len(upass)<9 or not 0<len(upass_conf)<9:
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    text="Please check the number of letters again.",
+                    buttons=[MDFlatButton(
+                        text="OK",
+                        theme_text_color="Custom",
+                        text_color=(1, 0.647, 0, 1),
+                        on_release=self.cancel_pressed
+                    )]
+                )
+            self.dialog.open()
+        elif upass != upass_conf:
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    text="Please check the password again.",
+                    buttons=[MDFlatButton(
+                        text="OK",
+                        theme_text_color="Custom",
+                        text_color=(1, 0.647, 0, 1),
+                        on_release=self.cancel_pressed
+                    )]
+                )
+            self.dialog.open()
+```
+Since, I set the maximum number of letters that user can input, if the user press signup button while inputted data doesn't qualify the given number of letters, the dialog shows the error message.
+Also, the case of password and confirmation password are different, it also shows the error message.
+
+```.py
+        else:
+            hash_text = f"name {uname},pass {upass}"
+            hash = make_hash(hash_text)
+            results = db_connection.search(query="SELECT * FROM users", multiple=True)
+            for row in results:
+                signature = row[2]
+                valid = check_hash(hashed_text=signature, text=hash_text)
+                print(valid)
+
+                if valid:
+                    if not self.dialog:
+                        self.dialog = MDDialog(
+                            text="Your password is invalid, so please enter again.",
+                            buttons=[MDFlatButton(
+                                text="OK",
+                                theme_text_color="Custom",
+                                text_color=(1, 0.647, 0, 1),
+                                on_release=self.cancel_pressed
+                            )]
+                        )
+                    self.dialog.open()
+```
+
+To validate the combination of username and password, I decided to se hash instead of the jst comparison of username and password to make sure the stronger security.
+First, I created the hash based on given username and password, then get the data from the table `users` amd compare with the stored hash`signature`.
+If it is valid which means that the set of username and password are already exists, the dialog ask the user to enter username and password.
+
+```.py
+            else:
+                query = f"""
+                INSERT into users (username, hash)
+                values ('{uname}','{hash}');
+                """
+                db_connection.run_query(query)
+                self.ids.uname.text=""
+                self.ids.upass.text=""
+                self.ids.upass_conf.text=""
+                self.parent.current = "Login"
+```
+If the inputted data meets those recommendations, by using the sqlite3 query the system create username and password (hash).
+After the system stored the information about username and password, make the text fields
+Then, the page automatically move to the log in.
 
 ## Citation
 [^1]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
