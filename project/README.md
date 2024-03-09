@@ -18,7 +18,6 @@ This information is hard for new staff to memorize everything, so she needs the 
 
 (see evidence of consultation in AppendixA)
 
-
 ## Proposed Solution
 Considering the client's requirements, a GUI (Graphical User Interface) application seems to be best option because it has clear visual which is easy to use.
 - mistakes on tracking money on paper
@@ -83,7 +82,7 @@ https://www.javatpoint.com/sqlite-advantages-and-disadvantages
 
 
 ## Wireframe
-![wire_frame.jpg](Project_md_image%2Fwire_frame.jpg)
+![wire_frame2.png](Project_md_image%2Fwire_frame2.png)
 
 ## Flow Diagrams
 ### Screen Change
@@ -148,5 +147,11 @@ https://www.javatpoint.com/sqlite-advantages-and-disadvantages
 My client requires a system to protect the private data. I thought about using a singup system to accomplish this requrement using if condition, for loop, while loop and the open command to work with csv file.
 
 
-## Record of Tasks
+## Citation
+[^1]: “Exploring The Advantages And Disadvantages Of Python.” RedSwitches, 11 January 2024, https://www.redswitches.com/blog/advantages-and-disadvantages-of-python/. Accessed 10 March 2024.
+[^2]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
+[^3]: Juviler, Jamie. “What Is GUI? Graphical User Interfaces, Explained.” HubSpot Blog, 30 August 2023, https://blog.hubspot.com/website/what-is-gui. Accessed 10 March 2024.
+[^4]:“Python: Console Application Structure | by Areyana | Analytics Vidhya.” Medium, 3 March 2020, https://medium.com/analytics-vidhya/python-console-application-structure-ab337c5e94d7. Accessed 10 March 2024.
+[^5]:“SQLite Advantages and Disadvantages - javatpoint.” Javatpoint, https://www.javatpoint.com/sqlite-advantages-and-disadvantages. Accessed 10 March 2024.
+[^6]:
   
