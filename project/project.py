@@ -110,6 +110,7 @@ class HomeScreen(MDScreen):
 
 class SignupScreen(MDScreen):
     dialog=None
+    valid_value=False
     def try_signup(self):
         uname = self.ids.uname.text
         upass = self.ids.upass.text
@@ -121,7 +122,7 @@ class SignupScreen(MDScreen):
                 hash TEXT);"""
         db_connection.run_query(query_users)
 
-        if not 0<len(uname)<16 or not 0<len(upass)<9 or not 0<len(upass_conf)<9:
+        if not 0<len(uname)<16:
             if not self.dialog:
                 self.dialog = MDDialog(
                     text="Please check the number of letters again.",
@@ -145,7 +146,6 @@ class SignupScreen(MDScreen):
                     )]
                 )
             self.dialog.open()
-
         else:
             hash_text = f"name {uname},pass {upass}"
             hash = make_hash(hash_text)
@@ -154,7 +154,6 @@ class SignupScreen(MDScreen):
                 signature = row[2]
                 valid = check_hash(hashed_text=signature, text=hash_text)
                 print(valid)
-
                 if valid:
                     if not self.dialog:
                         self.dialog = MDDialog(
@@ -167,6 +166,7 @@ class SignupScreen(MDScreen):
                             )]
                         )
                     self.dialog.open()
+                    break
                 else:
                     query = f"""
                     INSERT into users (username, hash)
@@ -176,7 +176,10 @@ class SignupScreen(MDScreen):
                     self.ids.uname.text=""
                     self.ids.upass.text=""
                     self.ids.upass_conf.text=""
+                    self.dialog.dismiss()
+                    self.dialog = None
                     self.parent.current = "Login"
+                    break
     def cancel_pressed(self, *args):
         if self.dialog:
             self.dialog.dismiss()
@@ -203,23 +206,23 @@ class LoginScreen(MDScreen): #Login
                 app.staff_id_value = row[0]
                 self.ids.uname.text=""
                 self.ids.upass.text=""
+                self.dialog = None
                 self.parent.current = "Menu"
                 app.root.ids.topbar.pos_hint = {"top": 1}
                 print(valid)
-                self.dialog=None
                 break
-            else:
-                if not self.dialog:
-                    self.dialog = MDDialog(
-                        text="Your username or password is incorrect, so please enter again.",
-                        buttons=[MDFlatButton(
-                            text="OK",
-                            theme_text_color="Custom",
-                            text_color=(1, 0.647, 0, 1),
-                            on_release=self.cancel_pressed
-                        )]
-                    )
-                self.dialog.open()
+            # else:
+                # if not self.dialog:
+                #     self.dialog = MDDialog(
+                #         text="Your username or password is incorrect, so please enter again.",
+                #         buttons=[MDFlatButton(
+                #             text="OK",
+                #             theme_text_color="Custom",
+                #             text_color=(1, 0.647, 0, 1),
+                #             on_release=self.cancel_pressed
+                #         )]
+                #     )
+                # self.dialog.open()
 
     def cancel_pressed(self, *args):
         if self.dialog:
@@ -259,6 +262,9 @@ class MenuScreen(MDScreen):
         for k,v in menu_d.items():
             if key == k:
                 screen = v
+                if screen == 'Home':
+                    app.root.ids.topbar.pos_hint = {"top": 2}
+
         self.parent.current = screen
 
     def go_back_to_home(self):

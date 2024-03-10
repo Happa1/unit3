@@ -1247,6 +1247,9 @@ For the side menu bar, I used `MDNavigationDrawer` and add `DrawerClickableItem`
 To make the selected items more visible, I set the class `DrawerClickableItem@MDNavigationDrawerItem` and `DrawerLabelItem@MDNavigationDrawerItem` which is the code to change the color of the labele they select.
 If the user move the cursor and set the focus on the `DrawerLabelItem`, the color of the item will change from `#ffffff` to `"#4a4939"`.
 
+# CriteriaD: Functionality
+The video of the application.
+https://drive.google.com/drive/folders/1EOk0Dfd0fRsdDp4kjif_ZqO6UlDEUuEq?usp=drive_link
 
 ## Citation
 [^1]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
