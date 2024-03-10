@@ -435,21 +435,87 @@ After the success login, the page moves to "Menu" and break the for loop.
 In the case of username and password doesn't match with hash in the `users` table, it shows the error message.
 
 ## Inventory (Success Criteria 2,6)
-To meet the **success criteria 2** about the track of inventory
+To meet the **success criteria 2** about the track of inventory, I decided to create a table which shows the inventory condition.
+I created `inventory` table in the database, and the table includes the value of id, name of items, the current amount of stock, and shortage (the current amount of stock - the expected storage amount (default_amount)).
 ```.py
+    def on_pre_enter(self, *args):
+        columns_names = [('number',50),('material', 100), ('amount', 100),('shortage',100)]
+        # columns_names = [column for column in columns_names if column[0] not in ['id', 'genre']]
+
+        self.data_tables = MDDataTable(
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .8},
+            use_pagination=True,
+            check=True,
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
+            rows_num=10,
+            column_data=columns_names,
+        )
+        self.data_tables.bind(on_row_press=self.row_pressed)
+        self.data_tables.bind(on_check_press=self.checkbox_pressed)
+        self.add_widget(self.data_tables)
+        self.update()
+
+
+    def update(self):
+        data = db_connection.search(query='SELECT id, name, amount, default_amount FROM inventory', multiple=True)
+        # Perform calculations and update the data before updating the MDDataTable
+        calculated_data = [(id, name, amount, (default_amount - amount)) for
+                           id, name, amount, default_amount in data]
+        # print(data)
+        print(calculated_data)
+        self.data_tables.update_row_data(
+            None, calculated_data
+        )
 ```
+I set the column name first, `number`, `material`,`amount` and `shortage`, and stored those names in the list of `columns_names`.
+Then, I create the `MDDataTable` which leads to the `update()` function.
+In the `update()` function, I run the query to select rows and specified columns from the `inventory` table.
+I stored those data into the list of `calculated_data`, and for the part of shortage, I calculated `default_amount - amount`.
+The `MDDataTable `will be updated and shows the table of inventory.
+
 
 To meet the **success criteria 6**, I added the function to suggest the ingredients which are likely to lack.
 I already have the shortage column in the above table, and when the calculation button is pressed, the table shows the ingredients which have more than 5 shortages.
 ```.py
+    def calculate_pressed(self):
+        if self.calculate:
+            data = db_connection.search(query='SELECT id, name, amount, default_amount FROM inventory', multiple=True)
+            calculated_data = [(id, name, amount, (default_amount - amount)) for
+                               id, name, amount, default_amount in data]
+            calculated_data_2=[]
+            for row in calculated_data:
+                if row[3] >=5:
+                    calculated_data_2.append(row)
 
-```
+            self.data_tables.update_row_data(
+                None, calculated_data_2
+            )
+            self.calculate=None
+            self.ids.calculate_btn.text="Original"
+            self.ids.calculate_btn.icon = "backup-restore"
 
-```.py
+        else:
+            data = db_connection.search(query='SELECT id, name, amount, default_amount FROM inventory', multiple=True)
+            # Perform calculations and update the data before updating the MDDataTable
+            calculated_data = [(id, name, amount, (default_amount - amount)) for
+                               id, name, amount, default_amount in data]
+            # print(data)
+            print(calculated_data)
+            self.data_tables.update_row_data(
+                None, calculated_data
+            )
+            self.calculate = True
+            self.ids.calculate_btn.text = "Calculate"
+            self.ids.calculate_btn.icon = "calculator"
 ```
-
-```.py
-```
+I set the variable `calculate=True` first, so if the user press the calculate button for the first time, it leads to the if statement of `if self.calculate:`.
+For the data used in the data table, I set the for loop for the table `inventory`, and if statement says that the rows where the shortage is bigger than 5 are added into the variable list of `calculated_data_2`.
+Then, the `MDDataTable` will be updated for the table `calculated_data_2`, and the state of `calculate` become `None` and the text of button changes, too.
+This allows the user to find items which are likely to run out soon.
+When the user press the button again, it shows the original table of the inventory and change the state of `calculate` and the tet of button.
+c
 ## Ledger (Success Criteria 3)
 To meet the **success criteria 3** of trak of money, I decided to create the ledger table.
 The table shows the date, the name of staff, description, price, and balance for both sale and purchase orders.
@@ -490,13 +556,6 @@ As same as the other datatables , I set the name of the column, create `MDDataTa
 In this case, I used `ledger` table for the money part and `users` table for username part.
 
 
-
-
-```.py
-```
-
-```.py
-```
 
 ## Take Order (Create candle) (Success Criteria 2, 4)
 To meet the success criteria 4 about the creation of candle, I made three pages to take order and make candle successfully.
