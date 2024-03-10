@@ -41,7 +41,6 @@ For the development, I needed a database to record data, and I chose SQLite as a
 I developed a desktop application that works well with SQLite which uses local data sources. We can set hash-check for SQLite database, so it ensures higher security different from the Google spreadsheet. 
 In addition, SQLite is faster than other files and more reliable.[^5]
 
-
 ## Success Criteria
 1. The GUI application has a signup and login system that shop staff can login with a username and password. 
 (Issue Tackled: “It is not clear who purchases materials or takes an order and handles money when recording on the paper”)
@@ -59,30 +58,46 @@ In addition, SQLite is faster than other files and more reliable.[^5]
 # Criteria B: Design
 
 ## System Diagram
-![system_diagram.jpg](Project_md_image%2Fsystem_diagram.jpg)
-**Fig.2**
-
+![system_diagram2.png](Project_md_image%2Fsystem_diagram2.png)
+**Fig.2** shows the system diagram of the GUI application. I used Macbook Air computer as the development tool and Pycharm for the coding editor. 
+Inside the Pycharm, I have the `project.py`, `project_lib.py`, `project.kv`, and `project.db` files and database.
+Inside the database of `project.db` which uses sqlite3, I have table users, inventory, orders, order_history, purchases and ledger.
 
 ## ER Diagram
 ![ER_diagram.jpg](Project_md_image%2FER_diagram.jpg)
+**Fig3** shows the ER diagram of the database `project.db`. 
+The database has 6 tables, users, inventory, orders, order_history, purchases and ledger.
+The rectangle shapes shows the name of the table and the circle which connected to each rectangle shows the attributes in the table.
+Primary key of each table is showed with underline.
+Table user connected to the table orders and purchases by one-to-many relationship because one user can make many orders.
+Table orders has one-to-one relationship with the table order_history because one each orde has each order records.
+Table orders and purchases are connected with ledger as one-to-one relationship because each order and purchases make the record in the ledger.
+Table orders and purchases are also connected to the table inventory as one-to-many relationship because one order contains several ingredients which affects the number of stock in the inventory.
 
 ## UML Diagram
 ![UML_diagram.jpg](Project_md_image%2FUML_diagram.jpg)
+**Fig4** shows the UML diagram of the GUI application.
+There are 13 classes and all the classes gets attributes from the kv file. One class receive MDApp as an attribute and others receive MDScreen as an attribute.
+Each of the class name is the same as the names in the kv file.
 
 
 ## Wireframe
 ![wire_frame2.png](Project_md_image%2Fwire_frame2.png)
+**Fig5** shows the wireframe of the GUI application. 
+The screen flow follow the arrows in the figfure.
 
 ## Flow Diagrams
 ### Screen Change
 ![Screen_change.jpg](Project_md_image%2FScreen_change.jpg)
+**Fig6** shows the flow diagram of the screen change function.
 
 ### Login
 ![Login_flow.jpg](Project_md_image%2FLogin_flow.jpg)
+**Fig7** shows the flow diagram of the login function.
 
-
-### Create Candle
+### Purchase Candle
 ![Purchase.jpg](Project_md_image%2FPurchase.jpg)
+**Fig8** shows the flow diagram of the candle purchase fnction.
 
 # Criteria C: Development
 
@@ -600,7 +615,7 @@ After receive the genre, I connected to the database and obtain the items in the
         self.menu.open()
 ```
 The above query obtains the rows from `inventory` table which the genre matches, so I extracted the name from the table by using for loop.
-I added obtained item name values in the list `button_menu` and created dwop-down lists by using kv components.
+I added obtained item name values in the list `button_menu` and created dwop-down lists by using kv components, `MDDropdownMenu`.
 The selected item `x` is pass to the function `button_pressed` by using `lambda`.
 
 ```.py
@@ -1209,6 +1224,7 @@ MDScreen:
             
             ```the code continues```
 ```
+
 In the kv file, I created a `MDTopAppBar` as the same level of `MDScreenManager` to allow the all screen to show the topbar.
 In the topbar, there is a title and icon, and if the user click the icon, the `lambda` sets the navigation drawer open.
 For the side menu bar, I used `MDNavigationDrawer` and add `DrawerClickableItem` to guide the user to move to the clicked pages.
