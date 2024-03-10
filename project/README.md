@@ -129,7 +129,6 @@ In addition, SQLite is faster than other files and more reliable.[^5]
 
 
 # Criteria C: Development
-
 ## Create  Database
 As a requirement from the client about the record of the order of candle and money tracking, database is needed to achieve this goal.
 Therefore, I decided to use sqlite3 relational database to store the data with relations to apply stored data in many ways.
@@ -176,6 +175,7 @@ db_connection.create()
 By importing the `DatabaseWorker` from the file `project_lib.py`, I created the database called `project_db` and variable `db_connection` to connect with the database.
 
 I created 6 tables in the case of these tables are not existed.
+
 **users**
 ```.py
         query_users = """CREATE TABLE if not exists users(
@@ -255,7 +255,6 @@ query_orders="""CREATE TABLE if not exists orders(
                  balance int);"""
     db_connection.run_query(query_ledger)
 ```
-
 
 ## Signup System (Success Criteria 1)
 As a requirement for the solution to clarify the user to make the attribution of responsibility, signup system is needed.
@@ -516,6 +515,7 @@ Then, the `MDDataTable` will be updated for the table `calculated_data_2`, and t
 This allows the user to find items which are likely to run out soon.
 When the user press the button again, it shows the original table of the inventory and change the state of `calculate` and the tet of button.
 c
+
 ## Ledger (Success Criteria 3)
 To meet the **success criteria 3** of trak of money, I decided to create the ledger table.
 The table shows the date, the name of staff, description, price, and balance for both sale and purchase orders.
@@ -554,8 +554,6 @@ The table shows the date, the name of staff, description, price, and balance for
 ```
 As same as the other datatables , I set the name of the column, create `MDDataTable`, update the content in the table in `update()`.
 In this case, I used `ledger` table for the money part and `users` table for username part.
-
-
 
 ## Take Order (Create candle) (Success Criteria 2, 4)
 To meet the success criteria 4 about the creation of candle, I made three pages to take order and make candle successfully.
@@ -1158,8 +1156,81 @@ When the IconButton pressed, it receives the id number by the function `lambda` 
 The id number is an id in `inventory` table, and it refers to the `description` column.
 If the dialog does not exist, it creates a dialog, if exists, it updates the description.
 
-
 ## UI
+Since I decided to use GUI application for easy and clear User Interface (UI), I decided edit the appearance of application to make it easier for the users to use.
+Therefore, I created the topbar and side navigation bar for easier page transition.
+
+**topbar**
+From file: 'project.kv'
+```.py
+MDScreen:
+
+    MDNavigationLayout:
+
+        MDScreenManager:
+         id: screen_manager
+            HomeScreen:
+                name: "Home"
+                ```  the screen code continues ```
+        
+        MDTopAppBar:
+            id: topbar
+            title: "Candlique"
+            elevation: 4
+            pos_hint: {"top": 2} #when not home it is 1
+            md_bg_color: "e7e4c0"
+            specific_text_color: "#4a4939"
+            left_action_items:[['menu', lambda x: nav_drawer.set_state("open")]]
+       
+        MDNavigationDrawer:
+            id: nav_drawer
+            radius: (0, 16, 16, 0)
+
+            NavigationMenu:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
+                
+<NavigationMenu>:
+    MDNavigationDrawerHeader:
+        title: "Candlique"
+        title_color: "#4a4939"
+        font_family: "JetBrainsMono"
+        spacing: "4dp"
+        padding: "12dp", 0, 0, "56dp"
+
+    MDNavigationDrawerLabel:
+        text: "Menu"
+
+    DrawerClickableItem:
+        icon: "home"
+        text: "Home"
+        on_press:
+            root.nav_drawer.set_state("close")
+            
+            ```the code continues```
+```
+In the kv file, I created a `MDTopAppBar` as the same level of `MDScreenManager` to allow the all screen to show the topbar.
+In the topbar, there is a title and icon, and if the user click the icon, the `lambda` sets the navigation drawer open.
+For the side menu bar, I used `MDNavigationDrawer` and add `DrawerClickableItem` to guide the user to move to the clicked pages.
+
+```.py
+<DrawerClickableItem@MDNavigationDrawerItem>
+    focus_color: "#e7e4c0"
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    ripple_color: "#c5bdd2"
+    selected_color: "#0c6c4d"
+
+<DrawerLabelItem@MDNavigationDrawerItem>
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    focus_behavior: False
+    selected_color: "#4a4939"
+    _no_ripple_effect: True
+```
+To make the selected items more visible, I set the class `DrawerClickableItem@MDNavigationDrawerItem` and `DrawerLabelItem@MDNavigationDrawerItem` which is the code to change the color of the labele they select.
+If the user move the cursor and set the focus on the `DrawerLabelItem`, the color of the item will change from `#ffffff` to `"#4a4939"`.
+
 
 ## Citation
 [^1]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
