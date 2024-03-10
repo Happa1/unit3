@@ -434,9 +434,15 @@ After the success login, the page moves to "Menu" and break the for loop.
 
 In the case of username and password doesn't match with hash in the `users` table, it shows the error message.
 
-## Inventory (Success Criteria 2)
-To meet the success criteria 2 about the track of inventory
+## Inventory (Success Criteria 2,6)
+To meet the **success criteria 2** about the track of inventory
 ```.py
+```
+
+To meet the **success criteria 6**, I added the function to suggest the ingredients which are likely to lack.
+I already have the shortage column in the above table, and when the calculation button is pressed, the table shows the ingredients which have more than 5 shortages.
+```.py
+
 ```
 
 ```.py
@@ -444,7 +450,53 @@ To meet the success criteria 2 about the track of inventory
 
 ```.py
 ```
+## Ledger (Success Criteria 3)
+To meet the **success criteria 3** of trak of money, I decided to create the ledger table.
+The table shows the date, the name of staff, description, price, and balance for both sale and purchase orders.
 
+```.py
+    def on_pre_enter(self, *args):
+        columns_names = [('Date',80),('Staff', 80), ('Description', 80),('Price', 80),('Balance',100)]
+        # columns_names = [column for column in columns_names if column[0] not in ['id', 'genre']]
+        self.data_tables = MDDataTable(
+            size_hint=(.9, .6),
+            pos_hint={'center_x': .5, 'top': .65},
+            use_pagination=True,
+            check=True,
+            background_color_header="#FFC697",
+            background_color_selected_cell="f5deb3",
+            rows_num=10,
+            column_data=columns_names
+        )
+        self.data_tables.bind(on_row_press=self.row_pressed)
+        self.add_widget(self.data_tables)
+        self.update()
+
+    def update(self):
+        data = db_connection.search(query='SELECT date, staff_id, description, price, balance FROM ledger', multiple=True)
+        staff_name = db_connection.search(
+            query='SELECT users.username FROM users, ledger where ledger.staff_id = users.id',
+            multiple=False)[0]
+        # Perform calculations and update the data before updating the MDDataTable
+        calculated_data = [(date, staff_name, description, price, balance) for
+                           date, staff_id, description, price, balance in data]
+        print(data)
+        print(calculated_data)
+        self.data_tables.update_row_data(
+            None, calculated_data
+        )
+```
+As same as the other datatables , I set the name of the column, create `MDDataTable`, update the content in the table in `update()`.
+In this case, I used `ledger` table for the money part and `users` table for username part.
+
+
+
+
+```.py
+```
+
+```.py
+```
 
 ## Take Order (Create candle) (Success Criteria 2, 4)
 To meet the success criteria 4 about the creation of candle, I made three pages to take order and make candle successfully.
@@ -950,8 +1002,6 @@ By considering the requirement of the track of orders, the orders created is rec
 ```
 I set the column name in the first part and created the `MDDataTable`. The content of the datatable is obtained and updated in the `update()`.
 
-
-
 ## Description (Success Criteria 5)
 Too meet the requirement from the client about the checking description of teh candle, I decided to develop the description screen.
 In the description page, the items are listed in the form of cards, and if the user pressed the icon in the right top of the cards, the description will be shown in the dialog.
@@ -1050,57 +1100,7 @@ The id number is an id in `inventory` table, and it refers to the `description` 
 If the dialog does not exist, it creates a dialog, if exists, it updates the description.
 
 
-## Ledger (Success Criteria 3, 6)
-To meet the **success criteria 3** of trak of money, I decided to create the ledger table.
-The table shows the date, the name of staff, description, price, and balance for both sale and purchase orders.
-
-```.py
-    def on_pre_enter(self, *args):
-        columns_names = [('Date',80),('Staff', 80), ('Description', 80),('Price', 80),('Balance',100)]
-        # columns_names = [column for column in columns_names if column[0] not in ['id', 'genre']]
-        self.data_tables = MDDataTable(
-            size_hint=(.9, .6),
-            pos_hint={'center_x': .5, 'top': .65},
-            use_pagination=True,
-            check=True,
-            background_color_header="#FFC697",
-            background_color_selected_cell="f5deb3",
-            rows_num=10,
-            column_data=columns_names
-        )
-        self.data_tables.bind(on_row_press=self.row_pressed)
-        self.add_widget(self.data_tables)
-        self.update()
-
-    def update(self):
-        data = db_connection.search(query='SELECT date, staff_id, description, price, balance FROM ledger', multiple=True)
-        staff_name = db_connection.search(
-            query='SELECT users.username FROM users, ledger where ledger.staff_id = users.id',
-            multiple=False)[0]
-        # Perform calculations and update the data before updating the MDDataTable
-        calculated_data = [(date, staff_name, description, price, balance) for
-                           date, staff_id, description, price, balance in data]
-        print(data)
-        print(calculated_data)
-        self.data_tables.update_row_data(
-            None, calculated_data
-        )
-```
-As same as the other datatables , I set the name of the column, create `MDDataTable`, update the content in the table in `update()`.
-In this case, I used `ledger` table for the money part and `users` table for username part.
-
-
-To meet the success criteria 6
-```.py
-```
-
-```.py
-```
-
-```.py
-```
 ## UI
-
 
 ## Citation
 [^1]: Gomez, Jose. “Web Apps Vs. Desktop Apps: Understanding the Differences.” Koombea, 16 November 2023, https://www.koombea.com/blog/web-apps-vs-desktop-apps/. Accessed 10 March 2024.
