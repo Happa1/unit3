@@ -271,6 +271,33 @@ query_orders="""CREATE TABLE if not exists orders(
     db_connection.run_query(query_ledger)
 ```
 
+Also, to calculate the balance, I created the trigger in the conosole of the database.
+```.py
+-- trigger
+CREATE TRIGGER update_balance
+AFTER INSERT ON ledger
+FOR EACH ROW
+BEGIN
+    UPDATE ledger
+    SET balance = (
+        SELECT COALESCE(SUM(price), 0)
+        FROM ledger AS prev
+        WHERE (prev.date < NEW.date OR (prev.date = NEW.date AND prev.id < NEW.id))
+    ) + NEW.price
+    WHERE id = NEW.id;
+END;
+```
+This query happens every time the table `ledger` is updated.
+I set the for loop which calculates the sum of the price column of the table.
+The trigger consider the table `ledger` as `prev`, and define the id by the newer date or the same date as previous row to prevent the miss order allocation.
+The new balance is calculated based on the sum of the `price` column for the current row and the cumulative sum of the 'price' column from previous rows.
+The subquery calculates the cumulative sum `(SUM(price))` of the `price` column from row in the `ledger`table that have a date earlier than the date of the newly inserted row `(prev.date < NEW.date)`. 
+If the dates are the same, it uses the row with the lower id ` (prev.id < NEW.id)`. 
+The` COALESCE `function is used to manage cases where there are no previous rows, to make sure that the sum is more htan 0.
+Then, the balance is updated only to the row with the same id as the newly inserted row `(WHERE id = NEW.id)`.
+
+I decided to use trigger in the console rather than putting the query to calculate the balance every after orders or purchases, because if I put the calculation coding in two different part of the python file, it will be redundant.
+
 ## Signup System (Success Criteria 1)
 As a requirement for the solution to clarify the user to make the attribution of responsibility, signup system is needed.
 Users make username and user password for the signup, and the system create hash from these data and store the hash instead of password to raise the level of security.
