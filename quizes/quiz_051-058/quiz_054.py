@@ -9,10 +9,10 @@ class rainDrops:
         return ''.join(out) or str(n)
 
 
-    def pour_2(self):
-        rain = {3:'i', 5:'a',7:'o'}
-        out = filter(lambda x=d: self%d==0, [f"Pl{r}ng" for d,r in rain])
+    # def pour_2(self):
+    #     rain = {3:'i', 5:'a',7:'o'}
+    #     out = filter(lambda x=d: self%d==0, [f"Pl{r}ng" for d,r in rain])
 
 
-test = rainDrops(28)
+test = rainDrops(30)
 print(test.pour())

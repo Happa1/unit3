@@ -956,9 +956,9 @@ class InventoryScreen(MDScreen):
 class InventoryOrderScreen(MDScreen):
     dialog=None
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.data_tables = None
-        self.selected_rows = []
+        super(InventoryOrderScreen, self).__init__(*args, **kwargs)
+        # self.data_tables = None
+        # self.selected_rows = []
     def on_pre_enter(self, *args):
         columns_names = [('No.',100),('Name',100),('Price', 50), ('Amount', 50),('Total',100)]
         self.data_tables = MDDataTable(
@@ -977,9 +977,12 @@ class InventoryOrderScreen(MDScreen):
         self.update()
     def update(self):
         data = db_connection.search(query='SELECT id, material, price, amount, total FROM purchases', multiple=True)
-        material=db_connection.search(query='SELECT inventory.name FROM inventory,purchases where inventory.id = purchases.material', multiple=False)[0]
-        calculated_data = [(id, material, amount, price, total) for
-                           id,name, amount, price, total in data]
+        data = db_connection.search(query='SELECT id, material, price, amount, total FROM purchases', multiple=True)
+        material_name=db_connection.search(query=f"SELECT name from inventory, purchases where inventory.id = purchases.material")[0]
+        print(f"nama:{material_name}")
+        calculated_data = [(id, material_name, amount, price, total) for
+                           id, material, price, amount, total in data]
+        print(calculated_data)
         self.data_tables.update_row_data(
             None, calculated_data
         )
